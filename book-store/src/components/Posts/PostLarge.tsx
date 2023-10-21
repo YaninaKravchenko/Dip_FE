@@ -31,8 +31,16 @@ const PostLarge: React.FC<IPostLargeProps> = ({ postData, index }) => {
       ? 'blue'
       : 'yellow';
 
+  // const handleAddToFavorite = () => {
+  //   dispatch(myFavoritesActions.addToFavorite(postData.isbn13));
+  // };
+
   const handleAddToFavorite = () => {
-    dispatch(myFavoritesActions.addToFavorite(postData.isbn13));
+    if (postIsFavorite) {
+      dispatch(myFavoritesActions.removeFromFavorite(postData.isbn13));
+    } else {
+      dispatch(myFavoritesActions.addToFavorite(postData));
+    }
   };
 
   return (

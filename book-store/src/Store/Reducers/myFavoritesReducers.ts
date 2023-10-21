@@ -34,6 +34,13 @@ export const myFavoritesReducers = (
                 };
             }
         }
+        case actionTypes.REMOVE_FROM_FAVORITE: {
+            const updatedFavorite = state.favorite.filter(post => post.isbn13 !== action.payload);
+            return {
+                ...state,
+                favorite: updatedFavorite
+            };
+        }
         default:
             return state;
     }
