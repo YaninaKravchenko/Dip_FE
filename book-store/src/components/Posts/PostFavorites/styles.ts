@@ -12,12 +12,14 @@ export const StyledPostsFavorites = styled('div')`
 
 export const StyledFavoriteIcon = styled(FavoriteIcon)`
     color: #6be;
+    cursor: pointer;
 `;
 
 export const StyledIconAndPosts = styled('div')`
     display: flex;
     flex-direction: row;
     justify-content: center;
+    align-items: flex-start;
     gap: 50px;
 `;
 
@@ -71,6 +73,7 @@ export const StyledArrowBackIcon = styled(ArrowBackIcon)`
     &.MuiSvgIcon-root {
         width: 50px;
         height: 50px;
+        padding-top: 8px;
     }
 `;
 

@@ -30,7 +30,7 @@ cursor: pointer;
 `;
 
 export const StyledShoppingCartIcon = styled(ShoppingCartIcon)`
-  margin: 0 10px;
+  margin: 0;
   color: black;
   transition: color 0.3s ease;
   cursor: pointer;
@@ -50,3 +50,20 @@ export const StyledPersonIcon = styled(PersonIcon)`
   }
 `;
 
+export const StyledShoppingCart = styled('div')`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  transition: color 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    color: #6be;
+  }
+`;
+
+export const StyledTotalCost = styled('div')`
+  margin: 0 10px;
+`;

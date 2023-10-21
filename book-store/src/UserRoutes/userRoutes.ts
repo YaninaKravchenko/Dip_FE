@@ -1,6 +1,7 @@
 import NotFound from '../components/Pages/NotFoundPage';
 import PostBookDetail from '../components/Posts/PostBookDetail';
 import PostsFavorites from '../components/Posts/PostFavorites/PostsFavorites';
+import SearchResults from '../components/SearchField/SearchResults';
 //import LoginPage from '../components/LoginPage/LoginPage';
 //import PostComponent from '../components/Posts/PostComponent';
 //import SuccessSignUp from '../components/Success/SuccessSignUp';
@@ -27,10 +28,17 @@ export const userRoutes: UserRoutes[] = [
     },
     {
         id: 3,
-        path: '/books/:myfavorites',
+        path: '/books/:favorites',
         Component: PostsFavorites,
         title: 'My Favorites',
     },
+    {
+        id: 4,
+        path: '/search',
+        Component: SearchResults,
+        title: 'Search',
+    },
+
     /*{
         id: 3,
         path: '/sign-up',

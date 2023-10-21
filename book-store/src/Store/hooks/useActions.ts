@@ -1,3 +1,4 @@
+import { cartActions } from './../Actions/cartActions';
 import { myFavoritesActions } from '../Actions/myFavoritesActions';
 import { searchActions } from './../Actions/searchActions';
 // import { addPost } from './../Actions/addPostAcsync';
@@ -20,6 +21,7 @@ export const useActions = () => {
     
     return bindActionCreators({ ...searchActions,
         ...myFavoritesActions,
+        ...cartActions,
         
     }, dispatch);
 };

@@ -13,6 +13,7 @@ import createSagaMiddleware from 'redux-saga';
 // import { paginationReducer } from './Reducers/paginationReducer';
 import { searchReducer } from './Reducers/searchReducer';
 import { myFavoritesReducers } from './Reducers/myFavoritesReducers';
+import { cartReducer } from './Reducers/cartReducers';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   // pagination: paginationReducer,
   search: searchReducer,
   favorites: myFavoritesReducers,
+  cart: cartReducer,
 });
 
 export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk, sagaMiddleware)));

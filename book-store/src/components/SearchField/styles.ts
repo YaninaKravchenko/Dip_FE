@@ -1,5 +1,8 @@
 import { IconButton } from '@mui/material';
 import styled from 'styled-components';
+//import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+//import { Link } from 'react-router-dom';
 
 export const StyledSearchField = styled('div')`
 width: 500px;
@@ -40,4 +43,9 @@ export const StyledIconButton = styled(IconButton)`
   & .MuiSvgIcon-root {
    color: black;
   }
+`;
+
+export const StyledFavoriteIcon = styled(FavoriteIcon)`
+    color: #6be;
+    cursor: pointer;
 `;

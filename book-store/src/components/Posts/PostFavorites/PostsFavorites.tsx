@@ -13,6 +13,7 @@ import {
   StyledLink,
   StyledInfoBook,
 } from './styles';
+import { Link } from 'react-router-dom';
 
 const PostsFavorites = () => {
   const dispatch = useDispatch();
@@ -33,7 +34,9 @@ const PostsFavorites = () => {
   // Отображаем список избранных постов
   return (
     <StyledIconAndPosts>
-      <StyledArrowBackIcon />
+      <Link to='/'>
+        <StyledArrowBackIcon />
+      </Link>
       <StyledPostsFavorites>
         <h2>Your Favorite Posts</h2>
         {favoritePosts.map((post) => (

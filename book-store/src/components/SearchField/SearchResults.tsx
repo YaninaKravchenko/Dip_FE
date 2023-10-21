@@ -2,9 +2,10 @@ import React, { FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../Store/index';
 import { ApiResponse, PostBook } from '../../types';
-import FavoriteIcon from '@mui/icons-material/Favorite';
+//import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { myFavoritesActions } from '../../Store/Actions/myFavoritesActions';
+import { StyledFavoriteIcon } from './styles';
 
 const SearchResults: FC = () => {
   const dispatch = useDispatch();
@@ -41,16 +42,13 @@ const SearchResults: FC = () => {
           <div key={index}>
             <h3>{book.title}</h3>
             {isFavorite ? (
-              <FavoriteIcon
-                onClick={() => handleToggleFavorite(book)}
-                style={{ color: '#6be' }}
-              />
+              <StyledFavoriteIcon onClick={() => handleToggleFavorite(book)} />
             ) : (
               <FavoriteBorderIcon onClick={() => handleToggleFavorite(book)} />
             )}
             <p>{book.subtitle}</p>
             <img src={book.image} alt={book.title} />
-            <a href={book.url}>Подробнее</a>
+            <a href={book.url}>About Book</a>
           </div>
         );
       })}

@@ -7,10 +7,12 @@ import PaginationPosts from '../Pagination/Pagination';
 import { fetchPostData } from '../../client/api/postsApi';
 import { RootState } from '../../Store';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { myFavoritesActions } from '../../Store/Actions/myFavoritesActions';
+import { StyledLink } from './PostFavorites/styles';
+import { cartActions } from '../../Store/Actions/cartActions';
 
 const PostComponent = () => {
   const [posts, setPosts] = useState<ApiResponse | null>({
@@ -76,6 +78,14 @@ const PostComponent = () => {
     }
   };
 
+  const handleAddToCart = (book: PostBook) => {
+    dispatch(cartActions.addToCart(book));
+  };
+
+  const handleAddToCartNewBook = (post: PostBook) => {
+    dispatch(cartActions.addToCart(post));
+  };
+
   return (
     <StyledPostsComponent>
       <Title variant='h1'>{displayTitle}</Title>
@@ -84,22 +94,29 @@ const PostComponent = () => {
         <StyledPosts>
           {postsToDisplay.map((book, index) => (
             <div key={index}>
-              <h3>{book.title}</h3>
-              {favoriteBooks.some(
-                (favBook) => favBook.isbn13 === book.isbn13
-              ) ? (
-                <FavoriteIcon
-                  onClick={() => handleToggleFavorite(book)}
-                  style={{ color: '#6be' }}
-                />
-              ) : (
-                <FavoriteBorderIcon
-                  onClick={() => handleToggleFavorite(book)}
-                />
-              )}
-              <p>{book.subtitle}</p>
+              <div>
+                <h3>{book.title}</h3>
+                {favoriteBooks.some(
+                  (favBook) => favBook.isbn13 === book.isbn13
+                ) ? (
+                  <FavoriteIcon
+                    onClick={() => handleToggleFavorite(book)}
+                    style={{ color: '#6be' }}
+                  />
+                ) : (
+                  <FavoriteBorderIcon
+                    onClick={() => handleToggleFavorite(book)}
+                  />
+                )}
+              </div>
               <img src={book.image} alt={book.title} />
-              <Link to={`/book/${book.isbn13}`}>ABOUT BOOK</Link>
+              <div>
+                <p>{book.subtitle}</p>
+                <p>{book.year}</p>
+                <p>{book.price}</p>
+                <StyledLink to={`/book/${book.isbn13}`}>About Book</StyledLink>
+                <button onClick={() => handleAddToCart(book)}>Buy</button>
+              </div>
             </div>
           ))}
         </StyledPosts>
@@ -109,7 +126,10 @@ const PostComponent = () => {
             currentPosts.map((post, index) => (
               <div key={index}>
                 <PostLarge postData={post} index={index} />
-                <Link to={`/book/${post.isbn13}`}>ABOUT BOOK</Link>
+                <StyledLink to={`/book/${post.isbn13}`}>About Book</StyledLink>
+                <button onClick={() => handleAddToCartNewBook(post)}>
+                  Buy
+                </button>
               </div>
             ))
           ) : (
