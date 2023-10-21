@@ -52,7 +52,7 @@ const PostLarge: React.FC<IPostLargeProps> = ({ postData, index }) => {
               {postIsFavorite ? (
                 <FavoriteIcon
                   onClick={handleAddToFavorite}
-                  style={{ color: 'red' }}
+                  style={{ color: '#6be' }}
                 />
               ) : (
                 <FavoriteBorderIcon onClick={handleAddToFavorite} />

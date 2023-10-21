@@ -6,8 +6,11 @@ import { StyledPostsComponent, StyledPosts } from './styles';
 import PaginationPosts from '../Pagination/Pagination';
 import { fetchPostData } from '../../client/api/postsApi';
 import { RootState } from '../../Store';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import { myFavoritesActions } from '../../Store/Actions/myFavoritesActions';
 
 const PostComponent = () => {
   const [posts, setPosts] = useState<ApiResponse | null>({
@@ -18,6 +21,7 @@ const PostComponent = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(6);
+  const dispatch = useDispatch();
 
   const filteredPosts: ApiResponse = useSelector(
     (state: RootState) => (state as any).search.filteredPosts
@@ -52,18 +56,50 @@ const PostComponent = () => {
   };
 
   const totalAsNumber = posts && posts.total ? parseInt(posts.total, 10) : 0;
+  const displayTitle =
+    filteredPosts && postsToDisplay && postsToDisplay.length > 0
+      ? 'Search Results'
+      : 'New Releases Books';
+
+  const favoriteBooks = useSelector(
+    (state: RootState) => state.favorites.favorite
+  );
+  const handleToggleFavorite = (book: PostBook) => {
+    const isFavorite = favoriteBooks.some(
+      (favBook) => favBook.isbn13 === book.isbn13
+    );
+
+    if (isFavorite) {
+      dispatch(myFavoritesActions.removeFromFavorite(book.isbn13));
+    } else {
+      dispatch(myFavoritesActions.addToFavorite(book));
+    }
+  };
+
   return (
     <StyledPostsComponent>
-      <Title variant='h1'>New Releases Books</Title>
+      <Title variant='h1'>{displayTitle}</Title>
 
       {filteredPosts && postsToDisplay && postsToDisplay.length > 0 ? (
         <StyledPosts>
           {postsToDisplay.map((book, index) => (
             <div key={index}>
               <h3>{book.title}</h3>
+              {favoriteBooks.some(
+                (favBook) => favBook.isbn13 === book.isbn13
+              ) ? (
+                <FavoriteIcon
+                  onClick={() => handleToggleFavorite(book)}
+                  style={{ color: '#6be' }}
+                />
+              ) : (
+                <FavoriteBorderIcon
+                  onClick={() => handleToggleFavorite(book)}
+                />
+              )}
               <p>{book.subtitle}</p>
               <img src={book.image} alt={book.title} />
-              <Link to={`/book/${book.isbn13}`}>Подробнее</Link>
+              <Link to={`/book/${book.isbn13}`}>ABOUT BOOK</Link>
             </div>
           ))}
         </StyledPosts>
@@ -73,7 +109,7 @@ const PostComponent = () => {
             currentPosts.map((post, index) => (
               <div key={index}>
                 <PostLarge postData={post} index={index} />
-                <Link to={`/book/${post.isbn13}`}>Подробнее</Link>
+                <Link to={`/book/${post.isbn13}`}>ABOUT BOOK</Link>
               </div>
             ))
           ) : (

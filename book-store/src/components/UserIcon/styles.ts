@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PersonIcon from '@mui/icons-material/Person';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 
 export const StyledIconWrapper = styled('div')`
@@ -20,6 +21,12 @@ export const StyledFavoriteBorderIcon = styled(FavoriteBorderIcon)`
   &:hover {
     color: #6be;
   }
+`;
+export const StyledFavoriteIcon = styled(FavoriteIcon)`
+margin-right: 10px;
+color: #6be;
+transition: color 0.3s ease;
+cursor: pointer;
 `;
 
 export const StyledShoppingCartIcon = styled(ShoppingCartIcon)`

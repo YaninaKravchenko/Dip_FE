@@ -1,5 +1,6 @@
 import NotFound from '../components/Pages/NotFoundPage';
 import PostBookDetail from '../components/Posts/PostBookDetail';
+import PostsFavorites from '../components/Posts/PostFavorites/PostsFavorites';
 //import LoginPage from '../components/LoginPage/LoginPage';
 //import PostComponent from '../components/Posts/PostComponent';
 //import SuccessSignUp from '../components/Success/SuccessSignUp';
@@ -24,14 +25,13 @@ export const userRoutes: UserRoutes[] = [
         Component: PostBookDetail,
         title: 'Book Detail',
     },
-    /*{
-        id: 6,
-        path: '/post/add-post',
-        Component: NewAddPost,
-        strict: false,
-        title: 'Add Post',
-    },
     {
+        id: 3,
+        path: '/books/:myfavorites',
+        Component: PostsFavorites,
+        title: 'My Favorites',
+    },
+    /*{
         id: 3,
         path: '/sign-up',
         Component: SignUpPage,

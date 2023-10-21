@@ -8,6 +8,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../Store';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { myFavoritesActions } from '../../Store/Actions/myFavoritesActions';
+import { Link } from 'react-router-dom';
+import ButtonBackToHome from '../Pages/ButtonBackToHome';
 
 const PostBookDetail: React.FC = () => {
   const { isbn13 } = useParams<{ isbn13: string }>();
@@ -57,6 +59,9 @@ const PostBookDetail: React.FC = () => {
 
   return (
     <div>
+      <Link to='/'>
+        <ButtonBackToHome />
+      </Link>
       <h1>{book.title}</h1>
       {bookIsFavorite ? (
         <FavoriteIcon onClick={handleToggleFavorite} style={{ color: 'red' }} />
