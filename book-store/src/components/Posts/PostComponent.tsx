@@ -13,6 +13,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { myFavoritesActions } from '../../Store/Actions/myFavoritesActions';
 import { StyledLink } from './PostFavorites/styles';
 import { cartActions } from '../../Store/Actions/cartActions';
+import CartPage from '../Pages/CartPage';
 
 const PostComponent = () => {
   const [posts, setPosts] = useState<ApiResponse | null>({
@@ -137,7 +138,7 @@ const PostComponent = () => {
           )}
         </StyledPosts>
       )}
-
+      <CartPage />
       <PaginationPosts
         count={Math.ceil(
           posts && posts.total ? totalAsNumber / postsPerPage : 0

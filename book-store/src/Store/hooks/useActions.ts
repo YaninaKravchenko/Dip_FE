@@ -1,3 +1,4 @@
+import { modalActions } from '../Actions/modalActions';
 import { cartActions } from './../Actions/cartActions';
 import { myFavoritesActions } from '../Actions/myFavoritesActions';
 import { searchActions } from './../Actions/searchActions';
@@ -22,6 +23,7 @@ export const useActions = () => {
     return bindActionCreators({ ...searchActions,
         ...myFavoritesActions,
         ...cartActions,
+        ...modalActions,
         
     }, dispatch);
 };

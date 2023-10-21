@@ -16,10 +16,8 @@ export const StyledCartModal = styled('div')`
     width: 300px;
     background-color: white;
     border: 1px solid black;
-    border-radius: 5px;
     padding: 15px;
-    box-shadow: 0px 0px 15px rgba(0,0,0,0.3);
-    z-index: 1000; 
+    z-index: 10; 
 `;
 
 export const StyledCloseButton = styled('button')`
