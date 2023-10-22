@@ -10,11 +10,11 @@ import createSagaMiddleware from 'redux-saga';
 // import { rootWatcher } from './sagas';
 // import { signUpReducer } from './Reducers/signUpReducer';
 // import { loginReducer } from './Reducers/loginReducer';
-// import { paginationReducer } from './Reducers/paginationReducer';
 import { searchReducer } from './Reducers/searchReducer';
 import { myFavoritesReducers } from './Reducers/myFavoritesReducers';
 import { cartReducer } from './Reducers/cartReducers';
 import modalReducer from './Reducers/modalReducer';
+import booksReducer from './Reducers/booksReducers';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -26,11 +26,11 @@ const rootReducer = combineReducers({
   // tabs: tabsReducer,
   // signUp: signUpReducer,
   // session: loginReducer,
-  // pagination: paginationReducer,
   search: searchReducer,
   favorites: myFavoritesReducers,
   cart: cartReducer,
   modal: modalReducer,
+  books: booksReducer,
 });
 
 export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk, sagaMiddleware)));

@@ -42,6 +42,29 @@ const PostBookDetail: React.FC = () => {
     fetchBookDetails();
   }, [isbn13]);
 
+  // useEffect(() => {
+  //   const fetchBookDetails = async () => {
+  //     if (!isbn13) {
+  //       console.error('ISBN is undefined.');
+  //       return;
+  //     }
+
+  //     try {
+  //       const response = await fetch(
+  //         `https://api.itbook.store/1.0/books/${isbn13}`
+  //       );
+  //       const data = await response.json();
+  //       setBook(data);
+
+  //      dispatch(booksActions.addISBN13(isbn13));
+  //     } catch (error) {
+  //       console.error('Failed to fetch book details:', error);
+  //     }
+  //   };
+
+  //   fetchBookDetails();
+  // }, [isbn13, dispatch]);
+
   if (!book) return <div>Loading...</div>;
 
   const handleToggleFavorite = () => {

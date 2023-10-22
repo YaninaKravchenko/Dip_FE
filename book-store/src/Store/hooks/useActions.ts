@@ -1,3 +1,4 @@
+import { booksActions } from '../Actions/booksActions';
 import { modalActions } from '../Actions/modalActions';
 import { cartActions } from './../Actions/cartActions';
 import { myFavoritesActions } from '../Actions/myFavoritesActions';
@@ -24,7 +25,7 @@ export const useActions = () => {
         ...myFavoritesActions,
         ...cartActions,
         ...modalActions,
-        
+        ...booksActions,
     }, dispatch);
 };
 //...selectedPostActions,

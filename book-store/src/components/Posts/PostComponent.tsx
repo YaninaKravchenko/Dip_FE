@@ -14,6 +14,8 @@ import { myFavoritesActions } from '../../Store/Actions/myFavoritesActions';
 import { StyledLink } from './PostFavorites/styles';
 import { cartActions } from '../../Store/Actions/cartActions';
 import CartPage from '../Pages/CartPage';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const PostComponent = () => {
   const [posts, setPosts] = useState<ApiResponse | null>({
@@ -54,11 +56,19 @@ const PostComponent = () => {
       ? posts.books.slice(indexOfFirstPost, indexOfLastPost)
       : [];
 
+  const indexOfLastPostSearch = currentPage * postsPerPage;
+  const indexOfFirstPostSearch = indexOfLastPostSearch - postsPerPage;
+  const currentSearchPosts = postsToDisplay.slice(
+    indexOfFirstPostSearch,
+    indexOfLastPostSearch
+  );
+
   const handlePageChange = (event: any, pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
 
   const totalAsNumber = posts && posts.total ? parseInt(posts.total, 10) : 0;
+
   const displayTitle =
     filteredPosts && postsToDisplay && postsToDisplay.length > 0
       ? 'Search Results'
@@ -87,13 +97,30 @@ const PostComponent = () => {
     dispatch(cartActions.addToCart(post));
   };
 
+  const handleNextPage = () => {
+    if (currentPage < Math.ceil(totalAsNumber / postsPerPage)) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+  const totalPagesSearch = Math.ceil(postsToDisplay.length / postsPerPage);
+  const totalPages =
+    postsToDisplay && postsToDisplay.length > 0
+      ? totalPagesSearch
+      : Math.ceil(totalAsNumber / postsPerPage);
+
   return (
     <StyledPostsComponent>
       <Title variant='h1'>{displayTitle}</Title>
 
       {filteredPosts && postsToDisplay && postsToDisplay.length > 0 ? (
         <StyledPosts>
-          {postsToDisplay.map((book, index) => (
+          {currentSearchPosts.map((book, index) => (
             <div key={index}>
               <div>
                 <h3>{book.title}</h3>
@@ -139,13 +166,39 @@ const PostComponent = () => {
         </StyledPosts>
       )}
       <CartPage />
-      <PaginationPosts
-        count={Math.ceil(
-          posts && posts.total ? totalAsNumber / postsPerPage : 0
-        )}
-        page={currentPage}
-        onBtnClick={handlePageChange}
-      />
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <ArrowBackIcon
+          onClick={handlePrevPage}
+          style={
+            currentPage === 1
+              ? { visibility: 'hidden', cursor: 'default' }
+              : { cursor: 'pointer' }
+          }
+        />
+        <PaginationPosts
+          count={
+            postsToDisplay && postsToDisplay.length > 0
+              ? totalPagesSearch
+              : Math.ceil(totalAsNumber / postsPerPage)
+          }
+          page={currentPage}
+          onBtnClick={handlePageChange}
+        />
+        <ArrowForwardIcon
+          onClick={handleNextPage}
+          style={
+            currentPage === totalPages
+              ? { visibility: 'hidden', cursor: 'default' }
+              : { cursor: 'pointer' }
+          }
+        />
+      </div>
     </StyledPostsComponent>
   );
 };

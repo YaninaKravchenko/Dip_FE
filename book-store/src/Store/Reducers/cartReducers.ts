@@ -16,31 +16,42 @@ export const cartReducer = (state = defaultState, action: baseActionTypeWithPayl
     switch (action.type) {
         case actionTypes.ADD_TO_CART:
             const priceToAdd = action.payload && action.payload.price 
-    ? parseFloat(action.payload.price.replace('$', '').replace(',', ''))
-    : 0;
+            ? parseFloat(action.payload.price.replace('$', '').replace(',', ''))
+            : 0;
 
+        const newTotalAfterAdd = parseFloat((state.totalCost + priceToAdd).toFixed(2));
 
-            return {
-                ...state,
-                items: [...state.items, action.payload],
-                totalCost: state.totalCost + priceToAdd
-            };
+        return {
+            ...state,
+            items: [...state.items, action.payload],
+            totalCost: newTotalAfterAdd
+        };
+
         case actionTypes.REMOVE_FROM_CART:
+            
+           const removedBook = state.items.find(
+                (item) => item.isbn13 === action.payload
+            );
+            
+            const priceToSubtract = removedBook 
+                ? parseFloat(removedBook.price.replace('$', '').replace(',', ''))
+                : 0;
+
             const newItems = state.items.filter(
                 (item) => item.isbn13 !== action.payload
             );
-            const removedBook = state.items.find(
-                (item) => item.isbn13 === action.payload
-            );
-            const priceToSubtract = removedBook ? parseFloat(removedBook.price) : 0;
 
-          
-            
+            let newTotalCost = state.totalCost - priceToSubtract;
+            if (newItems.length === 0) {
+                newTotalCost = 0;
+            }
+        
             return {
                 ...state,
                 items: newItems,
-                totalCost: state.totalCost - priceToSubtract
+                totalCost: parseFloat(newTotalCost.toFixed(2))
             };
+
         default:
             return state;
     }
