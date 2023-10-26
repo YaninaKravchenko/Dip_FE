@@ -17,3 +17,7 @@ export interface ISearchFieldProps {
   onClick: () => void;
 }
 
+export interface ISignUpPageProps {
+  isRegistered: boolean;
+  setIsRegistered: (value: boolean) => void;
+}

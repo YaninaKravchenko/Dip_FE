@@ -15,6 +15,7 @@ import { myFavoritesReducers } from './Reducers/myFavoritesReducers';
 import { cartReducer } from './Reducers/cartReducers';
 import modalReducer from './Reducers/modalReducer';
 import booksReducer from './Reducers/booksReducers';
+import userReducer from './Reducers/userReducers';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
   cart: cartReducer,
   modal: modalReducer,
   books: booksReducer,
+  user: userReducer,
 });
 
 export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk, sagaMiddleware)));

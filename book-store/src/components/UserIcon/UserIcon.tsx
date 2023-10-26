@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { RootState } from '../../Store';
 import {
   StyledIconWrapper,
@@ -8,15 +8,18 @@ import {
   StyledFavoriteIcon,
   StyledShoppingCart,
   StyledTotalCost,
+  StyledModal,
 } from './styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { modalActions } from '../../Store/Actions/modalActions';
+import PostSignInSignUp from '../Posts/PostSignInSignUp';
 
 const UserIcon = () => {
   // const [showFavorites, setShowFavorites] = useState(false);
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const totalCost = useSelector((state: RootState) => state.cart.totalCost);
+  const [showForm, setShowForm] = useState(false);
 
   const isCartModalVisible = useSelector(
     (state: RootState) => state.modal.isCartModalVisible
@@ -53,7 +56,15 @@ const UserIcon = () => {
         </div>
         <StyledTotalCost>{totalCost}</StyledTotalCost>
       </StyledShoppingCart>
-      <StyledPersonIcon />
+      <div>
+        <StyledPersonIcon onClick={() => setShowForm(!showForm)} />
+
+        {showForm && (
+          <StyledModal>
+            <PostSignInSignUp onClose={() => setShowForm(false)} />
+          </StyledModal>
+        )}
+      </div>
     </StyledIconWrapper>
   );
 };

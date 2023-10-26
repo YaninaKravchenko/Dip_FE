@@ -43,20 +43,11 @@ export interface BookResponse {
     };
 }
 
-// export type UserData = {
-//     userName?: string;
-//     username?: string;
-//     email: string;
-//     password?: string;
-// };
-
-// export interface PostData {
-//     title: string;
-//     lesson_num: string;
-//     description: string;
-//     text: string;
-//     image: string;
-//   }
+export type User = {
+    name?: string;
+    email: string;
+    password: string;
+};
 
 export type baseActionType<T> = {
     type: T;
