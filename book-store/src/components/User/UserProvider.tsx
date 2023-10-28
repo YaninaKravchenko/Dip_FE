@@ -1,4 +1,3 @@
-// UserProvider.js
 import React, { useState, useEffect } from 'react';
 import UserContext from './UserContext';
 import { User } from '../../types';

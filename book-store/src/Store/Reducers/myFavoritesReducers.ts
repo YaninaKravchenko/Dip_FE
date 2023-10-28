@@ -8,6 +8,8 @@ const defaultState: defaultStateType  = {
     favorite: [],
 };
 
+
+
 export const myFavoritesReducers = (
     state = defaultState,
     action: baseActionTypeWithPayload<actionTypes, any>
@@ -41,6 +43,18 @@ export const myFavoritesReducers = (
                 favorite: updatedFavorite
             };
         }
+        case actionTypes.SET_FAVORITES: {
+            return {
+                ...state,
+                favorite: action.payload
+            };
+        }
+        case actionTypes.CLEAR_FAVORITES:
+            return {
+                ...state,
+                favorite: []
+            };
+
         default:
             return state;
     }

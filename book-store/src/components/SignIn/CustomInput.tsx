@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { StyledLabel, StyledInput } from './stylesInput';
 
 type CustomInputProps = {
@@ -7,6 +7,7 @@ type CustomInputProps = {
   placeholder: string;
   value?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  readOnly?: boolean;
 };
 
 const CustomInput: FC<CustomInputProps> = ({

@@ -19,7 +19,7 @@ const PostLarge: React.FC<IPostLargeProps> = ({ postData, index }) => {
     (state: RootState) => state.favorites.favorite
   );
   const postIsFavorite = favoritePosts.some(
-    (post) => post.isbn13 === postData.isbn13
+    (post: PostBook) => post.isbn13 === postData.isbn13
   );
 
   const backgroundColor =

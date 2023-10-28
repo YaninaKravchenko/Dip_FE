@@ -22,7 +22,7 @@ const SearchResults: FC = () => {
 
   const handleToggleFavorite = (book: PostBook) => {
     const isFavorite = favoriteBooks.some(
-      (favBook) => favBook.isbn13 === book.isbn13
+      (favBook: PostBook) => favBook.isbn13 === book.isbn13
     );
 
     if (isFavorite) {
@@ -36,7 +36,7 @@ const SearchResults: FC = () => {
     <div>
       {postsToDisplay.map((book: PostBook, index: number) => {
         const isFavorite = favoriteBooks.some(
-          (favBook) => favBook.isbn13 === book.isbn13
+          (favBook: PostBook) => favBook.isbn13 === book.isbn13
         );
         return (
           <div key={index}>

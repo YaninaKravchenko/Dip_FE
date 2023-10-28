@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { PostBook, ApiResponse } from '../../types';
 import PostLarge from './PostLarge';
 import Title from '../Title/Title';
-import { StyledPostsComponent, StyledPosts } from './styles';
+import {
+  StyledPostsComponent,
+  StyledPosts,
+  StyledAboutBookBtn,
+} from './styles';
 import PaginationPosts from '../Pagination/Pagination';
 import { fetchPostData } from '../../client/api/postsApi';
 import { RootState } from '../../Store';
@@ -16,6 +20,8 @@ import { cartActions } from '../../Store/Actions/cartActions';
 import CartPage from '../Pages/CartPage';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import Button from '../Button/Button';
+import IconArrowBack from '../IconArrowBack/IconArrowBack';
 
 const PostComponent = () => {
   const [posts, setPosts] = useState<ApiResponse | null>({
@@ -79,7 +85,7 @@ const PostComponent = () => {
   );
   const handleToggleFavorite = (book: PostBook) => {
     const isFavorite = favoriteBooks.some(
-      (favBook) => favBook.isbn13 === book.isbn13
+      (favBook: PostBook) => favBook.isbn13 === book.isbn13
     );
 
     if (isFavorite) {
@@ -116,7 +122,10 @@ const PostComponent = () => {
 
   return (
     <StyledPostsComponent>
-      <Title variant='h1'>{displayTitle}</Title>
+      <div>
+        {displayTitle === 'Search Results' && <IconArrowBack />}
+        <Title variant='h1'>{displayTitle}</Title>
+      </div>
 
       {filteredPosts && postsToDisplay && postsToDisplay.length > 0 ? (
         <StyledPosts>
@@ -125,7 +134,7 @@ const PostComponent = () => {
               <div>
                 <h3>{book.title}</h3>
                 {favoriteBooks.some(
-                  (favBook) => favBook.isbn13 === book.isbn13
+                  (favBook: PostBook) => favBook.isbn13 === book.isbn13
                 ) ? (
                   <FavoriteIcon
                     onClick={() => handleToggleFavorite(book)}
@@ -142,8 +151,12 @@ const PostComponent = () => {
                 <p>{book.subtitle}</p>
                 <p>{book.year}</p>
                 <p>{book.price}</p>
-                <StyledLink to={`/book/${book.isbn13}`}>About Book</StyledLink>
-                <button onClick={() => handleAddToCart(book)}>Buy</button>
+                <StyledAboutBookBtn>
+                  <StyledLink to={`/book/${book.isbn13}`}>
+                    About Book
+                  </StyledLink>
+                  <Button onClick={() => handleAddToCart(book)}>Buy</Button>
+                </StyledAboutBookBtn>
               </div>
             </div>
           ))}
@@ -154,10 +167,14 @@ const PostComponent = () => {
             currentPosts.map((post, index) => (
               <div key={index}>
                 <PostLarge postData={post} index={index} />
-                <StyledLink to={`/book/${post.isbn13}`}>About Book</StyledLink>
-                <button onClick={() => handleAddToCartNewBook(post)}>
-                  Buy
-                </button>
+                <StyledAboutBookBtn>
+                  <StyledLink to={`/book/${post.isbn13}`}>
+                    About Book
+                  </StyledLink>
+                  <Button onClick={() => handleAddToCartNewBook(post)}>
+                    Buy
+                  </Button>
+                </StyledAboutBookBtn>
               </div>
             ))
           ) : (

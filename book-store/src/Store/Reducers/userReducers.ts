@@ -1,6 +1,5 @@
 import { baseActionTypeWithPayload } from '../Actions/types';
 import { actionTypes } from '../Actions/userActions';
-import { ApiResponse } from '../../types';
 
 type defaultStateType = {
     currentUser: any | null;
@@ -18,6 +17,22 @@ export const userReducer = (
       return {
         ...state,
         currentUser: action.payload,
+      };
+      case actionTypes.UPDATE_NAME:
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          name: action.payload
+        }
+      };
+    case actionTypes.UPDATE_PASSWORD:
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          password: action.payload
+        }
       };
     default:
       return state;

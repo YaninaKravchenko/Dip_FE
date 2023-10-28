@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import { StyledSuccess } from './styles';
-import { StyledSignInBlock, StyledSignInBtn } from '../SignIn/styles';
+import {
+  StyledSignInBlock,
+  StyledSignInBtn,
+  StyledSignBlock,
+} from '../SignIn/styles';
 import CustomInput from '../SignIn/CustomInput';
 //import { useNavigate } from 'react-router-dom';
 import SignUpSuccessModal from './SignUpSuccessModal';
 import { userAction } from '../../Store/Actions/userActions';
 import { useDispatch } from 'react-redux';
+import CloseIcon from '@mui/icons-material/Close';
+import Button from '../Button/Button';
 
 type SignUpPageProps = {
   setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -66,7 +72,12 @@ const SignUpPage: React.FC<SignUpPageProps> = ({ setIsVisible, onClose }) => {
 
   return (
     <StyledSuccess>
-      <h2>Sign Up</h2>
+      <StyledSignBlock>
+        <h2>Sign Up</h2>
+        <Button onClick={closeAll}>
+          <CloseIcon />
+        </Button>
+      </StyledSignBlock>
       {isRegistered && showSuccessModal ? (
         <SignUpSuccessModal onClose={closeAll} />
       ) : !isRegistered ? (

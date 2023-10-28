@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Link } from 'react-router-dom';
 
@@ -8,8 +7,6 @@ export const StyledPostsFavorites = styled('div')`
     flex-direction: column;
 
 `;
-
-
 export const StyledFavoriteIcon = styled(FavoriteIcon)`
     color: #6be;
     cursor: pointer;
@@ -60,21 +57,4 @@ export const StyledNoFavoritesMessage =  styled('div')`
     align-items: center;
     gap: 20px;
 `;
-
-export const StyledArrowBackIcon = styled(ArrowBackIcon)`
-    color: black;
-    font-size: 50px;
-    cursor: pointer;
-
-    &:hover {
-        color: #6be;
-    }
-
-    &.MuiSvgIcon-root {
-        width: 50px;
-        height: 50px;
-        padding-top: 8px;
-    }
-`;
-
 

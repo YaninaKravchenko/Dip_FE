@@ -1,16 +1,30 @@
-import React, { useRef, useContext, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CustomInput from './CustomInput';
 import ButtonBackToHome from '../Pages/ButtonBackToHome';
-import { StyledSignIn, StyledSignInBlock, StyledSignInBtn } from './styles';
-import UserContext from '../User/UserContext';
+import {
+  StyledSignIn,
+  StyledSignInBlock,
+  StyledSignInBtn,
+  StyledSignBlock,
+} from './styles';
+//import UserContext from '../User/UserContext';
 import { useNavigate } from 'react-router-dom';
 import { User } from '../../types';
+import { userAction } from '../../Store/Actions/userActions';
+import { useDispatch } from 'react-redux';
+import { cartActions } from '../../Store/Actions/cartActions';
+import { myFavoritesActions } from '../../Store/Actions/myFavoritesActions';
+import CloseIcon from '@mui/icons-material/Close';
+import Button from '../Button/Button';
 
-const SignIn = () => {
+interface ISignInProps {
+  closeModal: () => void;
+}
+
+const SignIn: React.FC<ISignInProps> = ({ closeModal }) => {
   const [loginData, setLoginData] = useState({ email: '', password: '' });
-  const { authenticateUser } = useContext(UserContext);
   const navigate = useNavigate();
-  const nameInputRef = useRef(null);
+  const dispatch = useDispatch();
 
   const handleChangeValue = (
     fieldName: string,
@@ -28,18 +42,48 @@ const SignIn = () => {
       (user) =>
         user.email === loginData.email && user.password === loginData.password
     );
+
+    const storedFavorites = localStorage.getItem('favoritePosts');
+
     if (user) {
-      authenticateUser(user);
+      dispatch(userAction.setCurrentUser(user));
+      localStorage.setItem('currentUser', JSON.stringify(user));
+
+      // Ваш фрагмент кода:
+      const userKey = `userData_${user.email}`;
+      const storedUserData = localStorage.getItem(userKey);
+      if (storedUserData) {
+        const { favoritePosts, cartItems, totalCost } =
+          JSON.parse(storedUserData);
+        dispatch(myFavoritesActions.setFavorites(favoritePosts));
+        dispatch(cartActions.setCartItems(cartItems));
+        dispatch(cartActions.setTotalCost(totalCost));
+      }
+
+      closeModal();
       navigate('/');
     } else {
       alert('Invalid credentials');
     }
   };
 
+  useEffect(() => {
+    const storedUser = localStorage.getItem('currentUser');
+    if (storedUser) {
+      const parsedUser: User = JSON.parse(storedUser);
+      dispatch(userAction.setCurrentUser(parsedUser));
+    }
+  }, [dispatch]);
+
   return (
     <StyledSignIn>
-      <ButtonBackToHome />
-      <h2>Sign In</h2>
+      <StyledSignBlock>
+        <h2>Sign In</h2>
+        <Button onClick={closeModal}>
+          <CloseIcon />
+        </Button>
+      </StyledSignBlock>
+
       <StyledSignInBlock>
         <CustomInput
           inputLabel='Email'

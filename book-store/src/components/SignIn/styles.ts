@@ -17,7 +17,7 @@ export const StyledSignInBlock = styled('div')`
    align-items: center;
    align-self: center;
    width: 350px;
-   height: 250px;
+   height: 450px;
    border: 2px solid #696969;
 
    & p {
@@ -33,4 +33,11 @@ export const StyledSignInBtn = styled('button')`
    justify-content: center;
    align-self: center;
 
+`;
+
+export const StyledSignBlock = styled('div')`
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   margin-bottom: 10px;
 `;

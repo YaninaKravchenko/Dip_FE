@@ -7,13 +7,14 @@ import NoFavoritesMessage from './NoFavoritesMessage';
 import {
   StyledPostsFavorites,
   StyledFavoriteIcon,
-  StyledArrowBackIcon,
   StyledIconAndPosts,
   StyledTitleFavorites,
   StyledLink,
   StyledInfoBook,
 } from './styles';
 import { Link } from 'react-router-dom';
+import { PostBook } from '../../../types';
+import IconArrowBack from '../../IconArrowBack/IconArrowBack';
 
 const PostsFavorites = () => {
   const dispatch = useDispatch();
@@ -35,11 +36,11 @@ const PostsFavorites = () => {
   return (
     <StyledIconAndPosts>
       <Link to='/'>
-        <StyledArrowBackIcon />
+        <IconArrowBack />
       </Link>
       <StyledPostsFavorites>
         <h2>Your Favorite Posts</h2>
-        {favoritePosts.map((post) => (
+        {favoritePosts.map((post: PostBook) => (
           <div key={post.isbn13}>
             <StyledTitleFavorites>
               <h3>{post.title}</h3>

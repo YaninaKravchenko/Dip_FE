@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { cartActions } from '../../Store/Actions/cartActions';
 import { StyledCartModal, StyledCloseButton } from './styles';
 import { modalActions } from '../../Store/Actions/modalActions';
+import { PostBook } from '../../types';
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -23,7 +24,7 @@ const CartPage = () => {
   };
 
   const handleClearCart = () => {
-    cartItems.forEach((book) => {
+    cartItems.forEach((book: PostBook) => {
       dispatch(cartActions.removeFromCart(book.isbn13));
     });
   };
@@ -37,7 +38,7 @@ const CartPage = () => {
       {isCartModalVisible && (
         <StyledCartModal>
           <StyledCloseButton onClick={handleCloseModal}>X</StyledCloseButton>
-          {cartItems.map((book) => (
+          {cartItems.map((book: PostBook) => (
             <div key={book.isbn13}>
               <h3>{book.title}</h3>
               <p>{book.price}</p>
@@ -46,8 +47,8 @@ const CartPage = () => {
               </button>
             </div>
           ))}
-          <div>Общая сумма: ${totalCost}</div>
-          <button onClick={handleClearCart}>Очистить корзину</button>
+          <div>Total: ${totalCost}</div>
+          <button onClick={handleClearCart}>Clear the cart</button>
         </StyledCartModal>
       )}
     </div>

@@ -162,3 +162,13 @@ export const StyledPostFullOne =  styled('div') `
   }
 
 `;
+
+export const StyledAboutBookBtn =  styled('div') `
+    display: flex;
+    justify-content: space-between;
+`;
+
+export const StylePostSignInUpBtn =  styled('div') `
+    display: flex;
+    justify-content: space-between;
+`;

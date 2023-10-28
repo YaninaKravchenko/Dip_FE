@@ -52,6 +52,25 @@ export const cartReducer = (state = defaultState, action: baseActionTypeWithPayl
                 totalCost: parseFloat(newTotalCost.toFixed(2))
             };
 
+        case actionTypes.SET_CART_ITEMS:
+
+            return {
+                ...state,
+                items: action.payload
+            };
+        case actionTypes.SET_TOTAL_COST:
+            
+            return {
+                ...state,
+                totalCost: action.payload
+            };
+        case actionTypes.CLEAR_CART:
+            return {
+                ...state,
+                items: [],
+                totalCost: 0
+            };
+
         default:
             return state;
     }

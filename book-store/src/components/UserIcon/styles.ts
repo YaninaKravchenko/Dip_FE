@@ -74,8 +74,27 @@ export const StyledModal = styled('div')`
   left: 50%;
   transform: translate(-50%, -50%); 
   z-index: 10;
-  background: white;
+  background-color: white;
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  //border-radius: 8px;
+  //box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+`;
+
+export const StyledCurrentUser = styled('span')`
+  width: 70px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #6be;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 0 5px;
+
+`;
+
+
+export const StyledUserBtn = styled('div')`
+  display: flex;
 `;

@@ -22,9 +22,3 @@ const Header = () => {
 };
 
 export default Header;
-//<SearchField isOpen={isOpen} onClick={toggleMenu} />
-// const [isOpen, setIsOpen] = useState(false);
-//const userData = useTypedSelector(selectors.getUserData);
-// const toggleMenu = () => {
-// setIsOpen(!isOpen);
-//};

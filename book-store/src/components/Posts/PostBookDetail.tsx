@@ -19,7 +19,9 @@ const PostBookDetail: React.FC = () => {
     (state: RootState) => state.favorites.favorite
   );
 
-  const bookIsFavorite = favoriteBooks.some((book) => book.isbn13 === isbn13);
+  const bookIsFavorite = favoriteBooks.some(
+    (book: BookResponse) => book.isbn13 === isbn13
+  );
 
   useEffect(() => {
     const fetchBookDetails = async () => {
