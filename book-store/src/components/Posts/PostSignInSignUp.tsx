@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-//import { Link, useNavigate } from 'react-router-dom';
 import SignIn from '../SignIn/SignIn';
 import SignUpPage from '../SignUpPage/SignUpPage';
 import Button from '../Button/Button';
 import { StylePostSignInUpBtn } from './styles';
+import CloseIcon from '@mui/icons-material/Close';
+import { StyledModal } from '../UserIcon/styles';
 
 interface IPostSignInSignUpProps {
   onClose: () => void;
@@ -21,7 +22,7 @@ const PostSignInSignUp: React.FC<IPostSignInSignUpProps> = ({ onClose }) => {
   return (
     <div>
       {isVisible && (
-        <div>
+        <StyledModal>
           <StylePostSignInUpBtn>
             <Button
               onClick={() => {
@@ -37,13 +38,16 @@ const PostSignInSignUp: React.FC<IPostSignInSignUpProps> = ({ onClose }) => {
             >
               Sign Up
             </Button>
+            <Button onClick={closeModal}>
+              <CloseIcon />
+            </Button>
           </StylePostSignInUpBtn>
           {activeTab === 'signIn' ? (
             <SignIn closeModal={closeModal} />
           ) : (
             <SignUpPage setIsVisible={setIsVisible} onClose={onClose} />
           )}
-        </div>
+        </StyledModal>
       )}
     </div>
   );

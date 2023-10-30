@@ -21,67 +21,68 @@ const Account = () => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  //   const handleSave = () => {
-  //     // Логика сохранения изменений, например, обновление пароля
-  //     if (newPassword === confirmPassword) {
-  //       // Обновить пароль в базе данных
-  //     } else {
-  //       alert('Пароли не совпадают!');
-  //     }
-  //   };
-
   const handleSave = () => {
     if (newPassword !== confirmPassword) {
-      alert('Пароли не совпадают!');
+      alert('Passwords do not match, please try again');
       return;
     }
 
-    // Обновите имя и пароль в Redux и возможно в базе данных
+    // Обновлю имя и пароль в Redux
     dispatch(userAction.updateName(name));
+    //localStorage.setItem('userName', name);
+
     if (newPassword) {
       dispatch(userAction.updatePassword(newPassword));
       localStorage.setItem('userPassword', newPassword);
+
       // Очистка полей пароля после сохранения
+
       setPassword('');
       setNewPassword('');
       setConfirmPassword('');
     }
 
     localStorage.setItem('userName', name);
+    if (newPassword) {
+      localStorage.setItem('userPassword', newPassword);
+    }
 
-    alert('Изменения сохранены успешно!');
-    // dispatch(userAction.updatePassword(newPassword));
-    // localStorage.setItem('userName', name);
-    // localStorage.setItem('userPassword', newPassword);
-
-    // alert('Изменения сохранены успешно!');
-    // // Очистка полей пароля после сохранения
-    // setPassword('');
-    // setNewPassword('');
-    // setConfirmPassword('');
+    alert('Changes have been saved successfully.!');
   };
 
   const handleCancel = () => {
-    // Логика отмены изменений, например, очистка полей
+    // отмена изменений
     setName(currentUser?.name || '');
     setPassword('');
     setNewPassword('');
     setConfirmPassword('');
   };
+
   useEffect(() => {
-    const saveName = localStorage.getItem('userName');
-    const savePassword = localStorage.getItem('userPassword');
+    const savedName = localStorage.getItem('userName');
+    const savedPassword = localStorage.getItem('userPassword');
 
-    if (saveName) {
-      setName(saveName);
-      dispatch(userAction.updateName(saveName)); // Обновление Redux Store
+    if (savedName) {
+      setName(savedName);
+      dispatch(userAction.updateName(savedName));
     }
 
-    if (savePassword) {
-      setPassword(savePassword);
-      dispatch(userAction.updatePassword(savePassword)); // Обновление Redux Store
+    if (savedPassword) {
+      setPassword(savedPassword);
+      dispatch(userAction.updatePassword(savedPassword));
     }
-  }, []);
+  }, [dispatch]);
+
+  // useEffect(() => {
+  //   localStorage.setItem('userName', name);
+  //   localStorage.setItem('userPassword', password);
+  // }, [name, password]);
+  useEffect(() => {
+    if (currentUser) {
+      localStorage.setItem('userName', currentUser.name);
+      localStorage.setItem('userPassword', currentUser.password);
+    }
+  }, [currentUser]);
 
   return (
     <StyledAccountWrapper>
@@ -138,7 +139,7 @@ const Account = () => {
       </StyledAccountProfile>
       <StyledAccountBtn>
         <Button onClick={handleSave}>SAVE CHANGES</Button>
-        <Button onClick={handleCancel}>CANSEL</Button>
+        <Button onClick={handleCancel}>CANCEL</Button>
       </StyledAccountBtn>
     </StyledAccountWrapper>
   );

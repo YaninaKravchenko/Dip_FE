@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export const ContentWrapper = styled('div')`
     display: flex;
@@ -131,6 +133,12 @@ export const StyledPaginationPosts =  styled('div') `
     margin: 25px 0;
 `;
 
+export const StyledArrowPaginationPosts = styled('div') `
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
 export const StyledPostFull =  styled('div') `
  width: 500px;
   height: 500px;
@@ -171,4 +179,23 @@ export const StyledAboutBookBtn =  styled('div') `
 export const StylePostSignInUpBtn =  styled('div') `
     display: flex;
     justify-content: space-between;
+`;
+
+export const StyledArrowBackIcon = styled(ArrowBackIcon)<{ currentPage: number }>`
+    cursor: ${props => (props.currentPage === 1 ? 'default' : 'pointer')};
+    visibility: ${props => (props.currentPage === 1 ? 'hidden' : 'visible')};
+
+    &:active {
+        color: #6be;
+    }
+`;
+
+export const StyledArrowForwardIcon = styled(ArrowForwardIcon)<{ currentPage: number, totalPages: number }>`
+    cursor: ${props => (props.currentPage === props.totalPages ? 'default' : 'pointer')};
+    visibility: ${props => (props.currentPage === props.totalPages ? 'hidden' : 'visible')};
+
+    
+    &:active {
+        color: #6be;
+    }
 `;

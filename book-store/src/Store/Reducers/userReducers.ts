@@ -1,12 +1,13 @@
 import { baseActionTypeWithPayload } from '../Actions/types';
 import { actionTypes } from '../Actions/userActions';
 
+
 type defaultStateType = {
-    currentUser: any | null;
+  currentUser: any | null;
 };
 
 const defaultState: defaultStateType = {
-    currentUser: null,
+  currentUser: null,
 };
 
 export const userReducer = (

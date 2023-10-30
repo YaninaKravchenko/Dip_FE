@@ -6,20 +6,20 @@ import {
   StyledPostsComponent,
   StyledPosts,
   StyledAboutBookBtn,
+  StyledArrowPaginationPosts,
+  StyledArrowForwardIcon,
+  StyledArrowBackIcon,
 } from './styles';
 import PaginationPosts from '../Pagination/Pagination';
 import { fetchPostData } from '../../client/api/postsApi';
 import { RootState } from '../../Store';
 import { useSelector, useDispatch } from 'react-redux';
-//import { Link } from 'react-router-dom';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { myFavoritesActions } from '../../Store/Actions/myFavoritesActions';
 import { StyledLink } from './PostFavorites/styles';
 import { cartActions } from '../../Store/Actions/cartActions';
 import CartPage from '../Pages/CartPage';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Button from '../Button/Button';
 import IconArrowBack from '../IconArrowBack/IconArrowBack';
 
@@ -38,17 +38,16 @@ const PostComponent = () => {
     (state: RootState) => (state as any).search.filteredPosts
   );
 
-  const searchText: string = useSelector(
-    (state: RootState) => (state as any).search.searchText
-  );
-  console.log(searchText);
+  // const searchText: string = useSelector(
+  //   (state: RootState) => (state as any).search.searchText
+  // );
+  // console.log(searchText);
 
   const postsToDisplay: PostBook[] = filteredPosts.books;
 
   useEffect(() => {
     const fetchData = async () => {
       const postData = await fetchPostData();
-      console.log(postData);
       setPosts(postData);
     };
 
@@ -183,20 +182,10 @@ const PostComponent = () => {
         </StyledPosts>
       )}
       <CartPage />
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <ArrowBackIcon
+      <StyledArrowPaginationPosts>
+        <StyledArrowBackIcon
+          currentPage={currentPage}
           onClick={handlePrevPage}
-          style={
-            currentPage === 1
-              ? { visibility: 'hidden', cursor: 'default' }
-              : { cursor: 'pointer' }
-          }
         />
         <PaginationPosts
           count={
@@ -207,15 +196,12 @@ const PostComponent = () => {
           page={currentPage}
           onBtnClick={handlePageChange}
         />
-        <ArrowForwardIcon
+        <StyledArrowForwardIcon
+          currentPage={currentPage}
+          totalPages={totalPages}
           onClick={handleNextPage}
-          style={
-            currentPage === totalPages
-              ? { visibility: 'hidden', cursor: 'default' }
-              : { cursor: 'pointer' }
-          }
         />
-      </div>
+      </StyledArrowPaginationPosts>
     </StyledPostsComponent>
   );
 };

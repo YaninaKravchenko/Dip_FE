@@ -102,7 +102,15 @@ const PostBookDetail: React.FC = () => {
       <p>
         <strong>Authors:</strong> {book.authors}
       </p>
-      {/* ... отобразите остальную информацию о книге ... */}
+      <p>
+        <strong>Publisher:</strong> {book.publisher}
+      </p>
+      <p>
+        <strong>Pages:</strong> {book.pages}
+      </p>
+      <p>
+        <strong>Desc:</strong> {book.desc}
+      </p>
       {book.pdf &&
         Object.entries(book.pdf).map(([chapter, link]) => (
           <div key={chapter}>

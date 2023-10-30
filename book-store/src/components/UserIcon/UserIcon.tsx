@@ -19,12 +19,10 @@ import PostSignInSignUp from '../Posts/PostSignInSignUp';
 import { useNavigate } from 'react-router-dom';
 import { userAction } from '../../Store/Actions/userActions';
 import { myFavoritesActions } from '../../Store/Actions/myFavoritesActions';
-import { booksActions } from '../../Store/Actions/booksActions';
 import { cartActions } from '../../Store/Actions/cartActions';
 import Button from '../Button/Button';
 
 const UserIcon = () => {
-  // const [showFavorites, setShowFavorites] = useState(false);
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const totalCost = useSelector((state: RootState) => state.cart.totalCost);
   const [showForm, setShowForm] = useState(false);
@@ -34,6 +32,7 @@ const UserIcon = () => {
   const isCartModalVisible = useSelector(
     (state: RootState) => state.modal.isCartModalVisible
   );
+
   const dispatch = useDispatch();
 
   const handleCartClick = () => {
@@ -66,28 +65,19 @@ const UserIcon = () => {
   const hasFavoritePosts = favoritePosts.length > 0;
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('currentUser');
-    if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
-      dispatch(userAction.setCurrentUser(parsedUser));
-    }
-  }, [dispatch]);
-
-  useEffect(() => {
-    console.log(favoritePosts);
     const storeFavoritePosts = localStorage.getItem('favoritePosts');
     if (storeFavoritePosts) {
       const parsedFavoritePosts = JSON.parse(storeFavoritePosts);
       dispatch(myFavoritesActions.setFavorites(parsedFavoritePosts));
     }
 
-    //Восстановление элементов корзины
+    //Восстановление элементов корзины:
     const storeCartItems = localStorage.getItem('cartItems');
     if (storeCartItems) {
       const parsedCartItems = JSON.parse(storeCartItems);
       dispatch(cartActions.setCartItems(parsedCartItems));
     }
-    console.log(totalCost);
+
     const storedTotalCost = localStorage.getItem('totalCost');
     if (storedTotalCost) {
       const parsedTotalCost = JSON.parse(storedTotalCost);
@@ -135,11 +125,7 @@ const UserIcon = () => {
           <StyledPersonIcon onClick={() => setShowForm(!showForm)} />
         )}
 
-        {showForm && (
-          <StyledModal>
-            <PostSignInSignUp onClose={() => setShowForm(false)} />
-          </StyledModal>
-        )}
+        {showForm && <PostSignInSignUp onClose={() => setShowForm(false)} />}
       </div>
     </StyledIconWrapper>
   );

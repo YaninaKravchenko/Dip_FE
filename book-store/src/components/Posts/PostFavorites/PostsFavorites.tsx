@@ -18,21 +18,21 @@ import IconArrowBack from '../../IconArrowBack/IconArrowBack';
 
 const PostsFavorites = () => {
   const dispatch = useDispatch();
-  // Получаем избранные посты из Redux store
+  // Здесь мы получаем избранные посты из Redux store:
   const favoritePosts = useSelector(
     (state: RootState) => state.favorites.favorite
   );
 
-  // Если у вас нет избранных постов, показать сообщение
+  // Если нет избранных постов, показать сообщение
   if (!favoritePosts || favoritePosts.length === 0) {
     return <NoFavoritesMessage />;
   }
 
   const handleRemoveFavorite = (isbn13: string) => {
-    dispatch(myFavoritesActions.removeFromFavorite(isbn13)); // Предположим, что у вас есть такое действие
+    dispatch(myFavoritesActions.removeFromFavorite(isbn13));
   };
 
-  // Отображаем список избранных постов
+  // И отображаем список избранных постов:
   return (
     <StyledIconAndPosts>
       <Link to='/'>
