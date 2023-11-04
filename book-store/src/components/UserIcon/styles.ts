@@ -4,6 +4,10 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PersonIcon from '@mui/icons-material/Person';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
+interface IShoppingCartIconProps {
+  hasBook: boolean;
+}
+
 
 export const StyledIconWrapper = styled('div')`
     display: flex;
@@ -14,7 +18,7 @@ export const StyledIconWrapper = styled('div')`
 
 export const StyledFavoriteBorderIcon = styled(FavoriteBorderIcon)`
   margin-right: 10px;
-  color: black;
+  //color: black;
   transition: color 0.3s ease;
   cursor: pointer;
 
@@ -29,9 +33,9 @@ transition: color 0.3s ease;
 cursor: pointer;
 `;
 
-export const StyledShoppingCartIcon = styled(ShoppingCartIcon)`
+export const StyledShoppingCartIcon = styled(ShoppingCartIcon)<IShoppingCartIconProps>`
   margin: 0;
-  color: black;
+  color: ${props => props.hasBook ? '#6be' : 'black'};
   transition: color 0.3s ease;
   cursor: pointer;
 
@@ -80,21 +84,33 @@ export const StyledModal = styled('div')`
   //box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 `;
 
-export const StyledCurrentUser = styled('span')`
-  width: 70px;
+export const StyledCurrentUser = styled('div')`
+  width: 45%;
   height: 50px;
-  display: flex;
+  display: flex; 
+  margin: 0 5px;
+  padding: 0 5px;
+  text-align: center;
   justify-content: center;
   align-items: center;
-  border: 2px solid #6be;
+  border: 1px solid #6be;
   border-radius: 5px;
-  font-weight: bold;
+  //color: #6be;
+  //font-weight: bold;
   cursor: pointer;
-  margin: 0 5px;
-
 `;
-
 
 export const StyledUserBtn = styled('div')`
   display: flex;
+`;
+
+export const StyledRedDot = styled('div')`
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  top: -10px;
+  left: -17px;
 `;

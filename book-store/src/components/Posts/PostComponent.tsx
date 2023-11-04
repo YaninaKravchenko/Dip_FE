@@ -9,19 +9,30 @@ import {
   StyledArrowPaginationPosts,
   StyledArrowForwardIcon,
   StyledArrowBackIcon,
+  StyledPostFavoriteIcon,
+  StyledPostFavoriteBorderIcon,
+  StyledPostsWithBtn,
+  StyledTitleSubtitle,
+  StyledLargePostPrice,
+  ContentBackgroundBorder,
+  StyledSearchPStarRating,
+  StyledSearchAboutBookBtn,
+  ContentWrapper,
+  TextContent,
+  StyledPostSearchFavoriteIcon,
+  StyledPostSearchFavoriteBorderIcon,
 } from './styles';
 import PaginationPosts from '../Pagination/Pagination';
 import { fetchPostData } from '../../client/api/postsApi';
 import { RootState } from '../../Store';
 import { useSelector, useDispatch } from 'react-redux';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import { myFavoritesActions } from '../../Store/Actions/myFavoritesActions';
 import { StyledLink } from './PostFavorites/styles';
 import { cartActions } from '../../Store/Actions/cartActions';
-import CartPage from '../Pages/CartPage';
 import Button from '../Button/Button';
 import IconArrowBack from '../IconArrowBack/IconArrowBack';
+import StarRating from '../StarRating/StarRating';
+import { useNavigate } from 'react-router-dom';
 
 const PostComponent = () => {
   const [posts, setPosts] = useState<ApiResponse | null>({
@@ -119,45 +130,52 @@ const PostComponent = () => {
       ? totalPagesSearch
       : Math.ceil(totalAsNumber / postsPerPage);
 
+  const navigate = useNavigate();
+
+  const handleBack = () => {
+    navigate(0);
+  };
+
   return (
     <StyledPostsComponent>
       <div>
-        {displayTitle === 'Search Results' && <IconArrowBack />}
+        {displayTitle === 'Search Results' && (
+          <IconArrowBack onClick={handleBack} />
+        )}
         <Title variant='h1'>{displayTitle}</Title>
       </div>
 
       {filteredPosts && postsToDisplay && postsToDisplay.length > 0 ? (
         <StyledPosts>
           {currentSearchPosts.map((book, index) => (
-            <div key={index}>
-              <div>
-                <h3>{book.title}</h3>
+            <StyledPostsWithBtn key={index}>
+              <ContentBackgroundBorder>
                 {favoriteBooks.some(
                   (favBook: PostBook) => favBook.isbn13 === book.isbn13
                 ) ? (
-                  <FavoriteIcon
+                  <StyledPostSearchFavoriteIcon
                     onClick={() => handleToggleFavorite(book)}
-                    style={{ color: '#6be' }}
                   />
                 ) : (
-                  <FavoriteBorderIcon
+                  <StyledPostSearchFavoriteBorderIcon
                     onClick={() => handleToggleFavorite(book)}
                   />
                 )}
-              </div>
-              <img src={book.image} alt={book.title} />
-              <div>
-                <p>{book.subtitle}</p>
-                <p>{book.year}</p>
+                <img src={book.image} alt={book.title} />
+              </ContentBackgroundBorder>
+              <StyledTitleSubtitle>
+                <h3>{book.title}</h3>
+              </StyledTitleSubtitle>
+              <StyledSearchPStarRating>
                 <p>{book.price}</p>
-                <StyledAboutBookBtn>
-                  <StyledLink to={`/book/${book.isbn13}`}>
-                    About Book
-                  </StyledLink>
-                  <Button onClick={() => handleAddToCart(book)}>Buy</Button>
-                </StyledAboutBookBtn>
-              </div>
-            </div>
+                <StarRating rating={book.rating} />
+              </StyledSearchPStarRating>
+
+              <StyledSearchAboutBookBtn>
+                <Button onClick={() => handleAddToCart(book)}>Buy</Button>
+                <StyledLink to={`/book/${book.isbn13}`}>About Book</StyledLink>
+              </StyledSearchAboutBookBtn>
+            </StyledPostsWithBtn>
           ))}
         </StyledPosts>
       ) : (
@@ -181,7 +199,7 @@ const PostComponent = () => {
           )}
         </StyledPosts>
       )}
-      <CartPage />
+
       <StyledArrowPaginationPosts>
         <StyledArrowBackIcon
           currentPage={currentPage}

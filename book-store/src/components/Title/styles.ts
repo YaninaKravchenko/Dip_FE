@@ -7,4 +7,5 @@ export const StyledTitle  = styled('div')`
     padding: 10px 0px;
     color: #313037;
     font-size: 38px;
+    cursor: pointer;
 `;

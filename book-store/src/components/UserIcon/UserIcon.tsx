@@ -11,6 +11,7 @@ import {
   StyledModal,
   StyledCurrentUser,
   StyledUserBtn,
+  StyledRedDot,
 } from './styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -21,6 +22,7 @@ import { userAction } from '../../Store/Actions/userActions';
 import { myFavoritesActions } from '../../Store/Actions/myFavoritesActions';
 import { cartActions } from '../../Store/Actions/cartActions';
 import Button from '../Button/Button';
+
 
 const UserIcon = () => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
@@ -103,21 +105,23 @@ const UserIcon = () => {
           ) : (
             <StyledFavoriteBorderIcon />
           )}
-          {hasFavoritePosts && <span>{favoritePosts.length}</span>}
+          {hasFavoritePosts && <span>{<StyledRedDot />}</span>}
         </Link>
       </div>
       <StyledShoppingCart>
         <div>
-          <StyledShoppingCartIcon onClick={handleCartClick} />
+          <StyledShoppingCartIcon
+            hasBook={cartItems.length > 0}
+            onClick={handleCartClick}
+          />
           {cartItems.length > 0 && <span>{cartItems.length}</span>}
         </div>
-        <StyledTotalCost>{totalCost}</StyledTotalCost>
       </StyledShoppingCart>
       <div>
         {currentUser ? (
           <StyledUserBtn>
             <StyledCurrentUser onClick={() => navigate('/account')}>
-              Hello, {currentUser.name}
+              {currentUser.name}
             </StyledCurrentUser>
             <Button onClick={handleSignOut}>Sign Out</Button>
           </StyledUserBtn>

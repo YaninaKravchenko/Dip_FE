@@ -2,6 +2,11 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+interface IBackgroundColorProps {
+    index: number;
+  }
 
 export const ContentWrapper = styled('div')`
     display: flex;
@@ -19,6 +24,8 @@ export const PostWrapper = styled('div')`
 `;
 
 export const TextContent = styled('div')`
+    position: relative;
+  
     & span {
         color: #696969;
     }
@@ -27,8 +34,36 @@ export const TextContent = styled('div')`
         color: #696969;
         font-size: 16px;
     }
-
 `;
+
+export const ContentBackgroundColor = styled('div')<IBackgroundColorProps>`
+    position: relative;
+    background-color: ${props => 
+      props.index % 4 === 0
+        ? 'purple'
+        : props.index % 4 === 1
+        ? 'blue'
+        : props.index % 4 === 2
+        ? 'green'
+        : 'yellow'};
+`;
+
+export const ContentBackgroundBorder = styled('div')`
+     border-bottom: 1px solid  #6be;
+`;
+
+export const StyledTitleSubtitle = styled('div')`
+    height: 85px;
+`;
+
+export const StyledLargePostPrice = styled('div')`
+    
+        & p {
+    font-size: 20px;
+    font-weight: bold;
+    }
+`;
+
 
 export const PostImageWrapper = styled('div') `
     display: block;
@@ -46,6 +81,53 @@ export const StyledIconWrapper = styled('div')`
     border-bottom: 3px solid #696969;
 
 `;
+
+export const StyledPostFavoriteIcon =  styled(FavoriteIcon)`
+    color: #6be;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 10px;
+`;
+
+export const StyledPostSearchFavoriteIcon =  styled(FavoriteIcon)`
+    color: #6be;
+    cursor: pointer;
+    position: absolute;
+ 
+    margin: 10px;
+`;
+
+export const StyledPostFavoriteBorderIcon = styled(FavoriteBorderIcon)`
+  color: #6be;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+
+
+  & .MuiSvgIcon-root path {
+    stroke: #6be;
+    fill: transparent;
+  }
+`;
+export const StyledPostSearchFavoriteBorderIcon = styled(FavoriteBorderIcon)`
+  color: #6be;
+  cursor: pointer;
+  position: absolute;
+
+  margin: 10px;
+
+
+  & .MuiSvgIcon-root path {
+    stroke: #6be;
+    fill: transparent;
+  }
+`;
+
+
 
 export const StyledIcon = styled('div')`
     display: flex;
@@ -104,10 +186,9 @@ export const StyleNextPrevBtnLink = styled(Link)`
   color: inherit;
 `;
 
-
-
 export const StyledPostsComponent = styled('div')`
     padding: 0px 10px;
+    
 `;
 
 export const StyledPosts = styled('div')`
@@ -123,6 +204,13 @@ export const StyledPost = styled('div')`
     width: 350px;
     height: 500px;
     margin: 20px;
+    padding: 10px;
+`;
+
+export const StyledPostsWithBtn = styled('div')`
+    border: 1px solid  #6be;
+    width: 350px;
+    padding: 10px;
 `;
 
 
@@ -174,6 +262,12 @@ export const StyledPostFullOne =  styled('div') `
 export const StyledAboutBookBtn =  styled('div') `
     display: flex;
     justify-content: space-between;
+    margin: 0 20px;
+`;
+
+export const StyledSearchAboutBookBtn =  styled('div') `
+    display: flex;
+    justify-content: space-between;
 `;
 
 export const StylePostSignInUpBtn =  styled('div') `
@@ -197,5 +291,16 @@ export const StyledArrowForwardIcon = styled(ArrowForwardIcon)<{ currentPage: nu
     
     &:active {
         color: #6be;
+    }
+`;
+
+export const StyledSearchPStarRating = styled('div')`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & p {
+    font-size: 20px;
+    font-weight: bold;
     }
 `;

@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { userAction } from './Store/Actions/userActions';
 import { RootState } from './Store';
 import { useSelector } from 'react-redux';
+import CartPage from './components/Pages/CartPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -28,20 +29,23 @@ function App() {
   }, [dispatch]);
 
   return (
-    <Routes>
-      <Route path='/' element={<Layout />}>
-        <Route index element={<PostsComponent />} />
-        {userRoutes.map(
-          ({ path, id, Component, componentAdditionalProps, strict }) => (
-            <Route
-              key={id}
-              path={path}
-              element={<Component {...componentAdditionalProps} />}
-            />
-          )
-        )}
-      </Route>
-    </Routes>
+    <div>
+      <CartPage />
+      <Routes>
+        <Route path='/' element={<Layout />}>
+          <Route index element={<PostsComponent />} />
+          {userRoutes.map(
+            ({ path, id, Component, componentAdditionalProps, strict }) => (
+              <Route
+                key={id}
+                path={path}
+                element={<Component {...componentAdditionalProps} />}
+              />
+            )
+          )}
+        </Route>
+      </Routes>
+    </div>
   );
 }
 

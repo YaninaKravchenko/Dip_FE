@@ -10,6 +10,10 @@ import {
   StyledAccountProfile,
   StyledAccountProfileName,
   StyledAccountBtn,
+  StyledAccount,
+  StyledDiv,
+  StyledAccountH4,
+  StyledAccountH2,
 } from './styles';
 
 const Account = () => {
@@ -87,56 +91,57 @@ const Account = () => {
   return (
     <StyledAccountWrapper>
       <IconArrowBack />
-      <StyledAccountProfile>
-        <h4>PROFILE</h4>
-        <StyledAccountProfileName>
-          <CustomInput
-            inputLabel='Name'
-            inputType='name'
-            placeholder='Enter your name'
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <CustomInput
-            inputLabel='Email'
-            inputType='email'
-            placeholder='Enter your email'
-            value={currentUser?.email}
-            readOnly
-          />
-        </StyledAccountProfileName>
-      </StyledAccountProfile>
-      <StyledAccountProfile>
-        <h4>PASSWORD</h4>
-        <div>
-          <p>Password</p>
-          <CustomInput
-            inputLabel='password'
-            inputType='password'
-            placeholder='Enter your password'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <div>
-          <p>New password</p>
-          <CustomInput
-            inputLabel='New password'
-            inputType='password'
-            placeholder='Enter your new password'
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-          />
-          <p>Confirm new password</p>
-          <CustomInput
-            inputLabel='Confirm new password'
-            inputType='password'
-            placeholder='Confirm new password'
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-        </div>
-      </StyledAccountProfile>
+      <StyledAccountH2>ACCOUNT</StyledAccountH2>
+      <StyledAccount>
+        <StyledAccountProfile>
+          <StyledAccountH4>PROFILE</StyledAccountH4>
+          <StyledAccountProfileName>
+            <CustomInput
+              inputLabel='Name'
+              inputType='name'
+              placeholder='Enter your name'
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <CustomInput
+              inputLabel='Email'
+              inputType='email'
+              placeholder='Enter your email'
+              value={currentUser?.email}
+              readOnly
+            />
+          </StyledAccountProfileName>
+        </StyledAccountProfile>
+        <StyledAccountProfile>
+          <StyledAccountH4>PASSWORD</StyledAccountH4>
+          <StyledAccountProfileName>
+            <CustomInput
+              inputLabel='Password'
+              inputType='password'
+              placeholder='Enter your password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <StyledDiv></StyledDiv>
+          </StyledAccountProfileName>
+          <StyledAccountProfileName>
+            <CustomInput
+              inputLabel='New password'
+              inputType='password'
+              placeholder='Enter your new password'
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+            <CustomInput
+              inputLabel='Confirm new password'
+              inputType='password'
+              placeholder='Confirm new password'
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          </StyledAccountProfileName>
+        </StyledAccountProfile>
+      </StyledAccount>
       <StyledAccountBtn>
         <Button onClick={handleSave}>SAVE CHANGES</Button>
         <Button onClick={handleCancel}>CANCEL</Button>

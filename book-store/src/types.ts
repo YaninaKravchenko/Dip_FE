@@ -29,6 +29,7 @@ export interface BookResponse {
     subtitle: string;
     authors: string;
     publisher: string;
+    language: string;
     isbn10: string;
     isbn13: string;
     pages: string;
@@ -41,6 +42,7 @@ export interface BookResponse {
     pdf: {
         [key: string]: string;
     };
+    isFavorite?: boolean;
 }
 
 export type User = {

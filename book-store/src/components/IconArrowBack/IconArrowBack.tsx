@@ -2,10 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { StyledArrowBackIcon } from './styles';
 
-const IconArrowBack: React.FC = () => {
+type IconArrowBackProps = {
+  onClick?: () => void;
+};
+
+const IconArrowBack: React.FC<IconArrowBackProps> = ({ onClick }) => {
   return (
     <Link to='/'>
-      <StyledArrowBackIcon />
+      <StyledArrowBackIcon onClick={onClick} />
     </Link>
   );
 };

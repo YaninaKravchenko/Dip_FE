@@ -1,12 +1,17 @@
 import React from 'react';
 import { ContentWrapper, PostWrapper, TextContent, StyledPost } from './styles';
 import { PostBook } from '../../types';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { useDispatch } from 'react-redux';
 import { myFavoritesActions } from '../../Store/Actions/myFavoritesActions';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../Store';
+import {
+  StyledPostFavoriteIcon,
+  StyledPostFavoriteBorderIcon,
+  ContentBackgroundColor,
+  StyledTitleSubtitle,
+  StyledLargePostPrice,
+} from './styles';
 
 interface IPostLargeProps {
   postData: PostBook;
@@ -22,15 +27,6 @@ const PostLarge: React.FC<IPostLargeProps> = ({ postData, index }) => {
     (post: PostBook) => post.isbn13 === postData.isbn13
   );
 
-  const backgroundColor =
-    index % 4 === 0
-      ? 'purple'
-      : index % 4 === 1
-      ? 'blue'
-      : index % 4 === 2
-      ? 'blue'
-      : 'yellow';
-
   const handleAddToFavorite = () => {
     if (postIsFavorite) {
       dispatch(myFavoritesActions.removeFromFavorite(postData.isbn13));
@@ -44,25 +40,23 @@ const PostLarge: React.FC<IPostLargeProps> = ({ postData, index }) => {
       <PostWrapper>
         <ContentWrapper>
           <TextContent>
-            <div style={{ backgroundColor }}>
+            <ContentBackgroundColor index={index}>
               {postIsFavorite ? (
-                <FavoriteIcon
-                  onClick={handleAddToFavorite}
-                  style={{ color: '#6be' }}
-                />
+                <StyledPostFavoriteIcon onClick={handleAddToFavorite} />
               ) : (
-                <FavoriteBorderIcon onClick={handleAddToFavorite} />
+                <StyledPostFavoriteBorderIcon onClick={handleAddToFavorite} />
               )}
 
               <img src={postData.image} alt={postData.title} />
-            </div>
-            <div>
+            </ContentBackgroundColor>
+            <StyledTitleSubtitle>
               <h3>{postData.title}</h3>
               <p>{postData.subtitle}</p>
-            </div>
+            </StyledTitleSubtitle>
             <div>
-              <p>{postData.price}</p>
-              <p>{postData.rating}</p>
+              <StyledLargePostPrice>
+                <p>{postData.price}</p>
+              </StyledLargePostPrice>
             </div>
           </TextContent>
         </ContentWrapper>

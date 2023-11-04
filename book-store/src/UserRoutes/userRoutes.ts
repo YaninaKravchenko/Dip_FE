@@ -1,7 +1,7 @@
 import Account from '../components/Account/Account';
-import SearchResults from '../components/SearchField/SearchResults';
+//import PostSearchResults from '../components/Posts/PostLarge';
 import NotFound from '../components/Pages/NotFoundPage';
-import PostBookDetail from '../components/Posts/PostBookDetail';
+import PostBookDetail from '../components/Posts/PostBookDetail/PostBookDetail';
 import PostsFavorites from '../components/Posts/PostFavorites/PostsFavorites';
 
 
@@ -28,12 +28,12 @@ export const userRoutes: UserRoutes[] = [
         Component: PostsFavorites,
         title: 'My Favorites',
     },
-    {
-        id: 4,
-        path: '/search',
-        Component: SearchResults,
-        title: 'Search',
-    },
+    // {
+    //     id: 4,
+    //     path: '/search',
+    //     Component: PostSearchResults,
+    //     title: 'Search',
+    // },
     {
         id: 5,
         path: '/account',
