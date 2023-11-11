@@ -1,17 +1,12 @@
 import React, { useState } from 'react';
-import { StyledSuccess } from './styles';
-import {
-  StyledSignInBlock,
-  StyledSignInBtn,
-  StyledSignBlock,
-} from '../SignIn/styles';
+import { StyledSuccess, StyledSuccessBtn } from './styles';
+import { StyledSignInBlock } from '../SignIn/styles';
 import CustomInput from '../SignIn/CustomInput';
-//import { useNavigate } from 'react-router-dom';
 import SignUpSuccessModal from './SignUpSuccessModal';
-import { userAction } from '../../Store/Actions/userActions';
+import { userAction } from '../../../../Store/Actions/userActions';
 import { useDispatch } from 'react-redux';
-import CloseIcon from '@mui/icons-material/Close';
-import Button from '../Button/Button';
+//import CloseIcon from '@mui/icons-material/Close';
+import Button from '../../../Button/Button';
 
 type SignUpPageProps = {
   setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -40,27 +35,64 @@ const SignUpPage: React.FC<SignUpPageProps> = ({ setIsVisible, onClose }) => {
     }));
   };
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     if (signUpData.password !== signUpData.confirmPassword) {
       alert('Passwords do not match');
       return;
     }
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
 
-    if (
-      users.some((user: { email: string }) => user.email === signUpData.email)
-    ) {
-      alert('Email already registered');
-      return;
+    try {
+      const response = await fetch(
+        'https://studapi.teachmeskills.by/auth/users/',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: signUpData.name,
+            email: signUpData.email,
+            password: signUpData.password,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        const users = JSON.parse(localStorage.getItem('users') || '[]');
+        users.push({
+          email: signUpData.email,
+          name: signUpData.name,
+          password: signUpData.password,
+        });
+
+        // Сохраняем обновленный список пользователей
+        localStorage.setItem('users', JSON.stringify(users));
+
+        localStorage.setItem(
+          'currentUser',
+          JSON.stringify({
+            email: signUpData.email,
+            name: signUpData.name,
+            password: signUpData.password,
+          })
+        );
+        if (data.token) {
+          localStorage.setItem('authToken', data.token); // Токен сохраняем
+        }
+        setIsRegistered(true);
+        setShowSuccessModal(true);
+      } else {
+        // Обработка ошибки, если статус ответа не "ok"
+        const errorData = await response.json();
+        console.log(errorData);
+        alert('Registration failed: ' + (errorData.detail || 'Unknown error'));
+      }
+    } catch (error) {
+      // Обработка исключения в случае ошибки при выполнении запроса
+      console.error('Registration error:', error);
+      alert('Registration error: ' + error);
     }
-    users.push(signUpData);
-    localStorage.setItem('users', JSON.stringify(users));
-    //authenticateUser(signUpData);
-    dispatch(userAction.setCurrentUser(signUpData));
-
-    setIsRegistered(true);
-    setShowSuccessModal(true);
-    //navigate('/sign-up');
   };
 
   const closeAll = () => {
@@ -72,12 +104,6 @@ const SignUpPage: React.FC<SignUpPageProps> = ({ setIsVisible, onClose }) => {
 
   return (
     <StyledSuccess>
-      <StyledSignBlock>
-        <h2>Sign Up</h2>
-        <Button onClick={closeAll}>
-          <CloseIcon />
-        </Button>
-      </StyledSignBlock>
       {isRegistered && showSuccessModal ? (
         <SignUpSuccessModal onClose={closeAll} />
       ) : !isRegistered ? (
@@ -110,7 +136,8 @@ const SignUpPage: React.FC<SignUpPageProps> = ({ setIsVisible, onClose }) => {
             onChange={(event) => handleChangeValue('confirmPassword', event)}
             value={signUpData.confirmPassword}
           />
-          <StyledSignInBtn onClick={handleSignUp}>Sign Up</StyledSignInBtn>
+          <StyledSuccessBtn></StyledSuccessBtn>
+          <Button onClick={handleSignUp}>Sign Up</Button>
         </StyledSignInBlock>
       ) : null}
     </StyledSuccess>

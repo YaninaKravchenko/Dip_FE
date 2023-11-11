@@ -72,17 +72,7 @@ export const StyledTotalCost = styled('div')`
   margin: 0 10px;
 `;
 
-export const StyledModal = styled('div')`
-  position: fixed;
-  top: 50%; 
-  left: 50%;
-  transform: translate(-50%, -50%); 
-  z-index: 10;
-  background-color: white;
-  padding: 20px;
-  //border-radius: 8px;
-  //box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-`;
+
 
 export const StyledCurrentUser = styled('div')`
   width: 45%;

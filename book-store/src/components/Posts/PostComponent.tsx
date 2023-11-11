@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { PostBook, ApiResponse } from '../../types';
+import { PostBook, ApiResponse, BookResponse } from '../../types';
 import PostLarge from './PostLarge';
 import Title from '../Title/Title';
 import {
@@ -9,21 +9,16 @@ import {
   StyledArrowPaginationPosts,
   StyledArrowForwardIcon,
   StyledArrowBackIcon,
-  StyledPostFavoriteIcon,
-  StyledPostFavoriteBorderIcon,
   StyledPostsWithBtn,
   StyledTitleSubtitle,
-  StyledLargePostPrice,
   ContentBackgroundBorder,
   StyledSearchPStarRating,
   StyledSearchAboutBookBtn,
-  ContentWrapper,
-  TextContent,
   StyledPostSearchFavoriteIcon,
   StyledPostSearchFavoriteBorderIcon,
 } from './styles';
 import PaginationPosts from '../Pagination/Pagination';
-import { fetchPostData } from '../../client/api/postsApi';
+import { fetchPostData, fetchPostIsbn } from '../../client/api/postsApi';
 import { RootState } from '../../Store';
 import { useSelector, useDispatch } from 'react-redux';
 import { myFavoritesActions } from '../../Store/Actions/myFavoritesActions';
@@ -33,6 +28,7 @@ import Button from '../Button/Button';
 import IconArrowBack from '../IconArrowBack/IconArrowBack';
 import StarRating from '../StarRating/StarRating';
 import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 const PostComponent = () => {
   const [posts, setPosts] = useState<ApiResponse | null>({
@@ -41,6 +37,10 @@ const PostComponent = () => {
     books: [],
   });
 
+  const [postsRating, setPostsRating] = useState<{
+    [isbn13: string]: BookResponse;
+  }>({});
+
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(6);
   const dispatch = useDispatch();
@@ -48,11 +48,6 @@ const PostComponent = () => {
   const filteredPosts: ApiResponse = useSelector(
     (state: RootState) => (state as any).search.filteredPosts
   );
-
-  // const searchText: string = useSelector(
-  //   (state: RootState) => (state as any).search.searchText
-  // );
-  // console.log(searchText);
 
   const postsToDisplay: PostBook[] = filteredPosts.books;
 
@@ -64,6 +59,21 @@ const PostComponent = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const fetchRatings = async () => {
+      const ratings: { [isbn13: string]: BookResponse } = {};
+      for (const book of postsToDisplay) {
+        const postData = await fetchPostIsbn(book.isbn13);
+        ratings[book.isbn13] = postData;
+      }
+      setPostsRating(ratings);
+    };
+
+    if (postsToDisplay.length > 0) {
+      fetchRatings();
+    }
+  }, [postsToDisplay]);
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -168,7 +178,10 @@ const PostComponent = () => {
               </StyledTitleSubtitle>
               <StyledSearchPStarRating>
                 <p>{book.price}</p>
-                <StarRating rating={book.rating} />
+
+                {postsRating[book.isbn13] && (
+                  <StarRating rating={postsRating[book.isbn13].rating} />
+                )}
               </StyledSearchPStarRating>
 
               <StyledSearchAboutBookBtn>

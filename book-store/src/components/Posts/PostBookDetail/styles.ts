@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 interface IStyledTabProps {
     isActive: boolean;
@@ -86,4 +87,20 @@ export const StyledTabComponentTab = styled('div')`
 
 export const StyledPostBookDetailFull =  styled('div')`
    width: 1080px;
+`;
+
+export const StyledArrowBackIconFav = styled(ArrowBackIcon)`
+    color: black;
+    font-size: 50px;
+    cursor: pointer;
+
+    &:hover {
+        color: #6be;
+    }
+
+    &.MuiSvgIcon-root {
+        width: 50px;
+        height: 50px;
+        padding-top: 8px;
+    }
 `;

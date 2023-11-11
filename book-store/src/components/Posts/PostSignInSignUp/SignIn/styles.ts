@@ -1,10 +1,13 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom'; 
 
 export const StyledSignIn = styled('div')`
      display: flex;
      flex-direction: column;
-     background-color: rgb(209, 207, 203);
+     background-color: #FFFF;
+     //border: 1px solid #6be;
      padding: 25px;
+     
      & h2 {
         font-size: 25px;
      }
@@ -14,11 +17,10 @@ export const StyledSignInBlock = styled('div')`
    display: flex;
    flex-direction: column;
    justify-content: center;
-   align-items: center;
-   align-self: center;
-   width: 350px;
+   margin: 10px;
+   width: 550px;
    height: 450px;
-   border: 2px solid #696969;
+
 
    & p {
       padding: 10px;
@@ -39,5 +41,29 @@ export const StyledSignBlock = styled('div')`
    display: flex;
    flex-direction: row;
    justify-content: space-between;
-   margin-bottom: 10px;
+   margin-bottom: 30px;
+`;
+
+export const StyledLinkSignIn = styled(Link)`
+   color: black;
+   text-decoration: none;
+   cursor: pointer;
+
+      &:hover {
+         text-decoration: underline;
+      }
+`;
+
+export const StyledSignCIEyes = styled('div')`
+   position: relative;
+`;
+
+export const StyledSignCIEyesBtn = styled('button')`
+   position: absolute;
+   right: 25px;
+   top: 60%;
+   transform: translateY(-50%);
+   border: none;
+   background: none;
+   cursor: pointer;
 `;

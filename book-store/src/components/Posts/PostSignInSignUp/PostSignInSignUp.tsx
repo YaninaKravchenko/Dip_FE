@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
-import SignIn from '../SignIn/SignIn';
-import SignUpPage from '../SignUpPage/SignUpPage';
-import Button from '../Button/Button';
-import { StylePostSignInUpBtn } from './styles';
-import CloseIcon from '@mui/icons-material/Close';
-import { StyledModal } from '../UserIcon/styles';
+import SignIn from './SignIn/SignIn';
+import SignUpPage from './SignUpPage/SignUpPage';
+//import Button from '../../Button/Button';
+import {
+  StylePostSignInUpBtn,
+  StyledButtonSignIn,
+  StyledModal,
+} from './styles';
+import IconArrowBack from '../../IconArrowBack/IconArrowBack';
+//import CloseIcon from '@mui/icons-material/Close';
 
 interface IPostSignInSignUpProps {
   onClose: () => void;
@@ -21,26 +25,26 @@ const PostSignInSignUp: React.FC<IPostSignInSignUpProps> = ({ onClose }) => {
 
   return (
     <div>
+      <IconArrowBack />
       {isVisible && (
         <StyledModal>
           <StylePostSignInUpBtn>
-            <Button
+            <StyledButtonSignIn
+              active={activeTab === 'signIn'}
               onClick={() => {
                 setActiveTab('signIn');
               }}
             >
               Sign In
-            </Button>
-            <Button
+            </StyledButtonSignIn>
+            <StyledButtonSignIn
+              active={activeTab === 'signUp'}
               onClick={() => {
                 setActiveTab('signUp');
               }}
             >
               Sign Up
-            </Button>
-            <Button onClick={closeModal}>
-              <CloseIcon />
-            </Button>
+            </StyledButtonSignIn>
           </StylePostSignInUpBtn>
           {activeTab === 'signIn' ? (
             <SignIn closeModal={closeModal} />

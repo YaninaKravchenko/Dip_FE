@@ -35,6 +35,13 @@ export const userReducer = (
           password: action.payload
         }
       };
+
+    case actionTypes.CLEAR_CURRENT_USER:
+      return {
+        ...state,
+        currentUser: null,
+      };
+      
     default:
       return state;
   }

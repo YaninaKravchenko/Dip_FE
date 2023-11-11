@@ -12,6 +12,7 @@ const StarRating: React.FC<StarRatingProps> = ({ rating }) => {
   const numberRating = parseFloat(rating);
 
   const renderStars = (rating: number) => {
+    console.log('Rating is: ', rating);
     let stars = [];
 
     for (let i = 1; i <= 5; i++) {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../Store';
-import CustomInput from '../SignIn/CustomInput';
+import CustomInput from '../Account/CustomInput';
 import Button from '../Button/Button';
 import IconArrowBack from '../IconArrowBack/IconArrowBack';
 import { userAction } from '../../Store/Actions/userActions';
@@ -24,6 +24,13 @@ const Account = () => {
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  useEffect(() => {
+    // Обновление состояния name при изменении currentUser
+    if (currentUser) {
+      setName(currentUser.name);
+    }
+  }, [currentUser]);
 
   const handleSave = () => {
     if (newPassword !== confirmPassword) {
@@ -55,38 +62,43 @@ const Account = () => {
   };
 
   const handleCancel = () => {
-    // отмена изменений
+    // Отмена изменений и возврат к текущему имени пользователя
+    if (currentUser) {
+      setName(currentUser.name);
+    }
+    // Очистка полей пароля
     setName(currentUser?.name || '');
     setPassword('');
     setNewPassword('');
     setConfirmPassword('');
   };
 
-  useEffect(() => {
-    const savedName = localStorage.getItem('userName');
-    const savedPassword = localStorage.getItem('userPassword');
+  // useEffect(() => {
+  //   const savedName = localStorage.getItem('userName');
+  //   const savedPassword = localStorage.getItem('userPassword');
 
-    if (savedName) {
-      setName(savedName);
-      dispatch(userAction.updateName(savedName));
-    }
+  //   if (savedName) {
+  //     setName(savedName);
+  //     dispatch(userAction.updateName(savedName));
+  //   }
 
-    if (savedPassword) {
-      setPassword(savedPassword);
-      dispatch(userAction.updatePassword(savedPassword));
-    }
-  }, [dispatch]);
+  //   if (savedPassword) {
+  //     setPassword(savedPassword);
+  //     dispatch(userAction.updatePassword(savedPassword));
+  //   }
+  // }, [dispatch]);
 
   // useEffect(() => {
   //   localStorage.setItem('userName', name);
   //   localStorage.setItem('userPassword', password);
   // }, [name, password]);
-  useEffect(() => {
-    if (currentUser) {
-      localStorage.setItem('userName', currentUser.name);
-      localStorage.setItem('userPassword', currentUser.password);
-    }
-  }, [currentUser]);
+  // useEffect(() => {
+  //   if (currentUser) {
+  //     setName(currentUser.name);
+  //     localStorage.setItem('userName', currentUser.name);
+  //     localStorage.setItem('userPassword', currentUser.password);
+  //   }
+  // }, [currentUser]);
 
   return (
     <StyledAccountWrapper>

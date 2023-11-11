@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { RootState } from '../../Store';
 import {
   StyledIconWrapper,
@@ -7,8 +7,6 @@ import {
   StyledPersonIcon,
   StyledFavoriteIcon,
   StyledShoppingCart,
-  StyledTotalCost,
-  StyledModal,
   StyledCurrentUser,
   StyledUserBtn,
   StyledRedDot,
@@ -16,24 +14,22 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { modalActions } from '../../Store/Actions/modalActions';
-import PostSignInSignUp from '../Posts/PostSignInSignUp';
 import { useNavigate } from 'react-router-dom';
 import { userAction } from '../../Store/Actions/userActions';
 import { myFavoritesActions } from '../../Store/Actions/myFavoritesActions';
 import { cartActions } from '../../Store/Actions/cartActions';
 import Button from '../Button/Button';
 
-
 const UserIcon = () => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const totalCost = useSelector((state: RootState) => state.cart.totalCost);
-  const [showForm, setShowForm] = useState(false);
+  //const [showForm, setShowForm] = useState(false);
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
   const navigate = useNavigate();
 
-  const isCartModalVisible = useSelector(
-    (state: RootState) => state.modal.isCartModalVisible
-  );
+  // const isCartModalVisible = useSelector(
+  //   (state: RootState) => state.modal.isCartModalVisible
+  // );
 
   const dispatch = useDispatch();
 
@@ -42,22 +38,32 @@ const UserIcon = () => {
   };
 
   const handleSignOut = () => {
-    const userKey = `userData_${currentUser.email}`;
-    const userDataToStore = {
-      favoritePosts,
-      cartItems,
-      totalCost,
-    };
-    localStorage.setItem(userKey, JSON.stringify(userDataToStore));
+    if (currentUser) {
+      const userKey = `userData_${currentUser.email}`;
+      const userDataToStore = {
+        favoritePosts,
+        cartItems,
+        totalCost,
+      };
 
-    dispatch(userAction.setCurrentUser(null));
-    localStorage.removeItem('currentUser');
-    localStorage.setItem('favoritePosts', JSON.stringify(favoritePosts));
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    localStorage.setItem('totalCost', String(totalCost));
-    dispatch(myFavoritesActions.clearFavorites());
-    dispatch(cartActions.clearCart());
-    navigate('/');
+      localStorage.setItem(userKey, JSON.stringify(userDataToStore));
+
+      // dispatch(userAction.setCurrentUser(null));
+      // dispatch(userAction.clearCurrentUser());
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('authToken');
+
+      //localStorage.removeItem(userKey);
+
+      // localStorage.setItem('favoritePosts', JSON.stringify(favoritePosts));
+      // localStorage.setItem('cartItems', JSON.stringify(cartItems));
+      // localStorage.setItem('totalCost', String(totalCost));
+      dispatch(userAction.setCurrentUser(null));
+      dispatch(userAction.clearCurrentUser());
+      dispatch(myFavoritesActions.clearFavorites());
+      dispatch(cartActions.clearCart());
+      navigate('/');
+    }
   };
 
   const favoritePosts = useSelector(
@@ -96,6 +102,10 @@ const UserIcon = () => {
     localStorage.setItem('totalCost', JSON.stringify(totalCost));
   }, [cartItems, totalCost]);
 
+  const openSignInSignUpPage = () => {
+    navigate('/sign-in-up');
+  };
+
   return (
     <StyledIconWrapper>
       <div>
@@ -126,10 +136,11 @@ const UserIcon = () => {
             <Button onClick={handleSignOut}>Sign Out</Button>
           </StyledUserBtn>
         ) : (
-          <StyledPersonIcon onClick={() => setShowForm(!showForm)} />
+          /*<StyledPersonIcon onClick={() => setShowForm(!showForm)} />*/
+          <StyledPersonIcon onClick={openSignInSignUpPage} />
         )}
 
-        {showForm && <PostSignInSignUp onClose={() => setShowForm(false)} />}
+        {/*showForm && <PostSignInSignUp onClose={() => setShowForm(false)} />*/}
       </div>
     </StyledIconWrapper>
   );

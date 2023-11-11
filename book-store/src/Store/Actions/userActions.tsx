@@ -1,9 +1,10 @@
-import { baseActionTypeWithPayload } from './types';
+import { baseActionTypeWithPayload, baseActionType } from './types';
 
 export enum actionTypes {
   SET_CURRENT_USER = 'SET_CURRENT_USER',
   UPDATE_NAME = 'UPDATE_NAME',
   UPDATE_PASSWORD = 'UPDATE_PASSWORD',
+  CLEAR_CURRENT_USER = 'CLEAR_CURRENT_USER',
 }
 
 interface ISetCurrentUserAction {
@@ -16,6 +17,7 @@ interface ISetCurrentUserAction {
   updatePassword: (
     password: string
   ) => baseActionTypeWithPayload<actionTypes.UPDATE_PASSWORD, string>;
+  clearCurrentUser: () => baseActionType<actionTypes.CLEAR_CURRENT_USER>;
 }
 
 export const userAction: ISetCurrentUserAction = {
@@ -30,5 +32,8 @@ export const userAction: ISetCurrentUserAction = {
   updatePassword: (password: string) => ({
     type: actionTypes.UPDATE_PASSWORD,
     payload: password,
+  }),
+  clearCurrentUser: () => ({
+    type: actionTypes.CLEAR_CURRENT_USER,
   }),
 };

@@ -6,9 +6,8 @@ import StarRating from '../../StarRating/StarRating';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../Store';
 import { myFavoritesActions } from '../../../Store/Actions/myFavoritesActions';
-//import { Link } from 'react-router-dom';
-//import ButtonBackToHome from '../Pages/ButtonBackToHome';
-import IconArrowBack from '../../IconArrowBack/IconArrowBack';
+import { Link } from 'react-router-dom';
+
 import {
   StyledPostBookDetail,
   StyledPostBookDetailPriceRating,
@@ -20,6 +19,7 @@ import {
   StyledTabComponent,
   StyledTabComponentTab,
   StyledPostBookDetailFull,
+  StyledArrowBackIconFav,
 } from './styles';
 import {
   StyledPostFavoriteIcon,
@@ -95,7 +95,10 @@ const PostBookDetail: React.FC = () => {
 
   return (
     <div>
-      <IconArrowBack />
+      <Link to='/books/:favorites'>
+        <StyledArrowBackIconFav />
+      </Link>
+
       <div>
         <h2>{book.title}</h2>
         <StyledPostBookDetailFull>

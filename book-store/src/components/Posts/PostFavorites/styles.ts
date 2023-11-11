@@ -2,11 +2,34 @@ import styled from 'styled-components';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Link } from 'react-router-dom';
 
-export const StyledPostsFavorites = styled('div')`
+
+export const StyledPostsFavBook =  styled('div')`
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    width: 1000px;
+`;
+
+export const StyledPostsFavorites = styled('div')`
 
 `;
+
+export const  StyledPostsFavoritesAll = styled('div')`
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 10px; 
+`;
+
+
+export const  StyledPostsFavoritesOne = styled('div')`
+    display: flex;
+    border: 1px solid #6be;
+    margin: 10px;
+    padding: 10px;
+    width: 700px
+ 
+`;
+
 export const StyledFavoriteIcon = styled(FavoriteIcon)`
     color: #6be;
     cursor: pointer;
@@ -26,6 +49,7 @@ export const StyledTitleFavorites = styled('div')`
     justify-content: space-between;
     align-items: center;
     gap: 50px;
+    margin: 0 20px;
 `;
 
 export const StyledInfoBook = styled('div')`
@@ -57,4 +81,5 @@ export const StyledNoFavoritesMessage =  styled('div')`
     align-items: center;
     gap: 20px;
 `;
+
 

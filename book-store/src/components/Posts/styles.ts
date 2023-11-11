@@ -270,10 +270,6 @@ export const StyledSearchAboutBookBtn =  styled('div') `
     justify-content: space-between;
 `;
 
-export const StylePostSignInUpBtn =  styled('div') `
-    display: flex;
-    justify-content: space-between;
-`;
 
 export const StyledArrowBackIcon = styled(ArrowBackIcon)<{ currentPage: number }>`
     cursor: ${props => (props.currentPage === 1 ? 'default' : 'pointer')};
@@ -304,3 +300,6 @@ export const StyledSearchPStarRating = styled('div')`
     font-weight: bold;
     }
 `;
+
+
+

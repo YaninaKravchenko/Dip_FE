@@ -4,6 +4,7 @@ export const StyledBtn = styled('button')`
     outline: none;
     text-decoration: none;
     display: inline-block;
+    font-size: 18px;
     padding: 10px 20px;
     color: white;
     background-color:#6be;

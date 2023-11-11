@@ -8,7 +8,7 @@ export type PostBook = {
     isbn13: string;
     pages: string;
     year: string;
-    rating: string;
+    rating?: string;
     desc: string;
     price: string;
     image: string;
@@ -49,6 +49,7 @@ export type User = {
     name?: string | null;
     email: string | null;
     password: string | null;
+    token?: string;
 };
 
 export type baseActionType<T> = {
