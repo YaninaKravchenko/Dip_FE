@@ -23,13 +23,8 @@ import Button from '../Button/Button';
 const UserIcon = () => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const totalCost = useSelector((state: RootState) => state.cart.totalCost);
-  //const [showForm, setShowForm] = useState(false);
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
   const navigate = useNavigate();
-
-  // const isCartModalVisible = useSelector(
-  //   (state: RootState) => state.modal.isCartModalVisible
-  // );
 
   const dispatch = useDispatch();
 
@@ -39,6 +34,8 @@ const UserIcon = () => {
 
   const handleSignOut = () => {
     if (currentUser) {
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
       const userKey = `userData_${currentUser.email}`;
       const userDataToStore = {
         favoritePosts,
@@ -46,19 +43,19 @@ const UserIcon = () => {
         totalCost,
       };
 
-      localStorage.setItem(userKey, JSON.stringify(userDataToStore));
+      localStorage.setItem('userData', JSON.stringify(userDataToStore));
 
-      // dispatch(userAction.setCurrentUser(null));
-      // dispatch(userAction.clearCurrentUser());
       localStorage.removeItem('currentUser');
       localStorage.removeItem('authToken');
+      localStorage.removeItem('userInfo');
 
-      //localStorage.removeItem(userKey);
+      localStorage.removeItem('userData');
 
-      // localStorage.setItem('favoritePosts', JSON.stringify(favoritePosts));
-      // localStorage.setItem('cartItems', JSON.stringify(cartItems));
-      // localStorage.setItem('totalCost', String(totalCost));
+      localStorage.setItem('favoritePosts', JSON.stringify(favoritePosts));
+      localStorage.setItem('cartItems', JSON.stringify(cartItems));
+      localStorage.setItem('totalCost', String(totalCost));
       dispatch(userAction.setCurrentUser(null));
+
       dispatch(userAction.clearCurrentUser());
       dispatch(myFavoritesActions.clearFavorites());
       dispatch(cartActions.clearCart());
@@ -70,7 +67,18 @@ const UserIcon = () => {
     (state: RootState) => state.favorites.favorite
   );
 
-  const hasFavoritePosts = favoritePosts.length > 0;
+  //const hasFavoritePosts = favoritePosts.length > 0;
+
+  const hasFavoritePosts = favoritePosts && favoritePosts.length > 0;
+
+  useEffect(() => {
+    // Восстанавливаем информацию о пользователе из localStorage
+    const storedUser = localStorage.getItem('currentUser');
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      dispatch(userAction.setCurrentUser(parsedUser));
+    }
+  }, [dispatch]);
 
   useEffect(() => {
     const storeFavoritePosts = localStorage.getItem('favoritePosts');
@@ -78,14 +86,12 @@ const UserIcon = () => {
       const parsedFavoritePosts = JSON.parse(storeFavoritePosts);
       dispatch(myFavoritesActions.setFavorites(parsedFavoritePosts));
     }
-
     //Восстановление элементов корзины:
     const storeCartItems = localStorage.getItem('cartItems');
     if (storeCartItems) {
       const parsedCartItems = JSON.parse(storeCartItems);
       dispatch(cartActions.setCartItems(parsedCartItems));
     }
-
     const storedTotalCost = localStorage.getItem('totalCost');
     if (storedTotalCost) {
       const parsedTotalCost = JSON.parse(storedTotalCost);
@@ -101,6 +107,16 @@ const UserIcon = () => {
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
     localStorage.setItem('totalCost', JSON.stringify(totalCost));
   }, [cartItems, totalCost]);
+
+  useEffect(() => {
+    // Восстанавливаем информацию о пользователе из localStorage
+    const storedUser = localStorage.getItem('currentUser');
+    if (storedUser) {
+      // Проверяем, что storedUser не null
+      const parsedUser = JSON.parse(storedUser);
+      dispatch(userAction.setCurrentUser(parsedUser));
+    }
+  }, [dispatch]);
 
   const openSignInSignUpPage = () => {
     navigate('/sign-in-up');

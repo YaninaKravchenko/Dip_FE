@@ -44,6 +44,21 @@ export const verifyToken = async (token: string) => {
       body: JSON.stringify({ token }),
     });
 
+//     const data = await response.json();
+//     return data ===  204; // Возвращает данные о валидности токена
+//   } catch (error) {
+//     console.error('Error verifying token:', error);
+// return false
+//   }
+// };
+
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Error verifying token:', errorData);
+      return null;
+    }
+
     const data = await response.json();
     return data; // Возвращает данные о валидности токена
   } catch (error) {
@@ -60,6 +75,13 @@ export const refreshToken = async (refreshToken: string) => {
     },
     body: JSON.stringify({ refresh: refreshToken }),
   });
+
+  
+  if (!response.ok) {
+    const errorData = await response.json();
+    console.error('Error refreshing token:', errorData);
+    return null;
+  }
 
   const data = await response.json();
     return data; // Возвращает новый токен

@@ -151,6 +151,9 @@ const NewPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
 
+  console.log('userId:', userId);
+  console.log('token:', token);
+
   useEffect(() => {
     if (!userId || !token) {
       setMessage('Ссылка для сброса пароля недействительна или устарела.');
@@ -169,32 +172,32 @@ const NewPassword = () => {
     }
   };
 
-  // Функция для обновления токена
-  const updateToken = async () => {
-    if (token) {
-      try {
-        const verificationResponse = await verifyToken(token);
-        if (!verificationResponse || verificationResponse.error) {
-          const refreshTokenResponse = await refreshToken(token);
-          if (refreshTokenResponse && refreshTokenResponse.access) {
-            return refreshTokenResponse.access;
-          } else {
-            setMessage('Unable to refresh token.');
-            return null;
-          }
-        }
-        return token;
-      } catch (error) {
-        console.error('Error updating token:', error);
-        setMessage('Error occurred during token verification.');
-        return null;
-      }
-    } else {
-      console.error('Token is undefined');
-      setMessage('Token is undefined or invalid.');
-      return null;
-    }
-  };
+  // // Функция для обновления токена
+  // const updateToken = async () => {
+  //   if (token) {
+  //     try {
+  //       const verificationResponse = await verifyToken(token);
+  //       if (!verificationResponse || verificationResponse.error) {
+  //         const refreshTokenResponse = await refreshToken(token);
+  //         if (refreshTokenResponse && refreshTokenResponse.access) {
+  //           return refreshTokenResponse.access;
+  //         } else {
+  //           setMessage('Unable to refresh token.');
+  //           return null;
+  //         }
+  //       }
+  //       return token;
+  //     } catch (error) {
+  //       console.error('Error updating token:', error);
+  //       setMessage('Error occurred during token verification.');
+  //       return null;
+  //     }
+  //   } else {
+  //     console.error('Token is undefined');
+  //     setMessage('Token is undefined or invalid.');
+  //     return null;
+  //   }
+  // };
 
   const handleNewPassword = async () => {
     setMessage('');
@@ -210,10 +213,15 @@ const NewPassword = () => {
     }
 
     let validToken = token;
+    console.log('Verifying token:', token);
 
     try {
       const verificationResponse = await verifyToken(token);
-      if (!verificationResponse || verificationResponse.error) {
+      ///if (!verificationResponse || verificationResponse.error) {
+      if (
+        !verificationResponse ||
+        verificationResponse.code === 'token_not_valid'
+      ) {
         // Верификация токена не удалась, попытка обновить токен
         const refreshTokenResponse = await refreshToken(token); // Здесь убедитесь, что передаете правильный токен для обновления
         if (refreshTokenResponse && refreshTokenResponse.access) {
@@ -223,6 +231,7 @@ const NewPassword = () => {
           return;
         }
       }
+      console.log('Verification response:', verificationResponse);
 
       const response = await fetch(
         'https://studapi.teachmeskills.by/auth/users/reset_password_confirm/',

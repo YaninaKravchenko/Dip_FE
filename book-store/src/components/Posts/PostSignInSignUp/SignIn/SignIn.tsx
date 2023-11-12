@@ -17,6 +17,7 @@ import { myFavoritesActions } from '../../../../Store/Actions/myFavoritesActions
 import Button from '../../../Button/Button';
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
+import { fetchUserInfo } from '../../../../client/api/postsApi';
 
 interface ISignInProps {
   closeModal: () => void;
@@ -69,13 +70,37 @@ const SignIn: React.FC<ISignInProps> = ({ closeModal }) => {
         // Сохраняем токен в localStorage
         localStorage.setItem('authToken', data.access); // Предполагается, что токен находится в свойстве 'access'
 
-        // Теперь вы можете обновить состояние Redux или выполнить другие действия
-        dispatch(userAction.setCurrentUser(data.user)); // Предполагается, что данные пользователя находятся в свойстве 'user'
+        const userInfo = await fetchUserInfo(data.access);
+        console.log('User data:', userInfo);
+
+        // Восстанавливаем данные из localStorage
+
+        const storedFavoritePosts = localStorage.getItem('favoritePosts');
+        const storedCartItems = localStorage.getItem('cartItems');
+        const storedTotalCost = localStorage.getItem('totalCost');
+
+        if (storedFavoritePosts) {
+          const parsedFavoritePosts = JSON.parse(storedFavoritePosts);
+          dispatch(myFavoritesActions.setFavorites(parsedFavoritePosts));
+        }
+
+        if (storedCartItems) {
+          const parsedCartItems = JSON.parse(storedCartItems);
+          dispatch(cartActions.setCartItems(parsedCartItems));
+        }
+
+        if (storedTotalCost) {
+          const parsedTotalCost = JSON.parse(storedTotalCost);
+          dispatch(cartActions.setTotalCost(parsedTotalCost));
+        }
+
+        localStorage.setItem('userInfo', JSON.stringify(userInfo));
+        localStorage.setItem('currentUser', JSON.stringify(userInfo));
+        dispatch(userAction.setCurrentUser(userInfo));
 
         closeModal();
         navigate('/');
       } else {
-        // Обработка ошибок аутентификации
         setMessage('Invalid credentials');
       }
     } catch (error) {
@@ -83,60 +108,63 @@ const SignIn: React.FC<ISignInProps> = ({ closeModal }) => {
       setMessage('An error occurred during login');
     }
   };
-  //   const users: User[] = JSON.parse(localStorage.getItem('users') || '[]');
 
-  //   console.log('Users in system:', users);
-  //   console.log('Login Data:', loginData);
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const authToken = localStorage.getItem('authToken') || '';
 
-  //   const user: User | undefined = users.find(
-  //     (user) =>
-  //       user.email === loginData.email && user.password === loginData.password
-  //   );
+      const userInfoString = localStorage.getItem('userInfo');
+      const userInfo = userInfoString ? JSON.parse(userInfoString) : null;
+      const storedUser = localStorage.getItem('currentUser');
 
-  //   if (user) {
-  //     dispatch(userAction.setCurrentUser(user));
-  //     localStorage.setItem('currentUser', JSON.stringify(user));
+      if (storedUser && authToken) {
+        const parsedUser = JSON.parse(storedUser);
+        dispatch(userAction.setCurrentUser(parsedUser));
+      }
 
-  //     const userKey = `userData_${user.email}`;
-  //     const storedUserData = localStorage.getItem(userKey);
-  //     if (storedUserData) {
-  //       const { favoritePosts, cartItems, totalCost } =
-  //         JSON.parse(storedUserData);
-  //       dispatch(myFavoritesActions.setFavorites(favoritePosts || []));
-  //       dispatch(cartActions.setCartItems(cartItems || []));
-  //       dispatch(cartActions.setTotalCost(totalCost || 0));
-  //     }
+      if (authToken) {
+        try {
+          // const authToken = localStorage.getItem('authToken');
 
-  //     closeModal();
-  //     navigate('/');
-  //   } else {
-  //     setMessage('Invalid credentials');
-  //   }
-  // };
-  // const autoSignIn = () => {
-  //   const storedUser = localStorage.getItem('currentUser');
+          // if (!authToken) {
+          //   setMessage('User is not authenticated');
+          //   return;
+          // }
 
-  //   if (storedUser) {
-  //     const userData: User = JSON.parse(storedUser);
-  //     dispatch(userAction.setCurrentUser(userData));
+          const response = await fetch(
+            'https://studapi.teachmeskills.by/auth/users/me/',
+            {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${authToken}`,
+              },
+            }
+          );
 
-  //     const userKey = `userData_${userData.email}`;
-  //     const storedUserData = localStorage.getItem(userKey);
+          if (response.ok) {
+            const userData = await response.json();
+            console.log('User data:', userData);
 
-  //     if (storedUserData) {
-  //       const { favoritePosts, cartItems, totalCost } =
-  //         JSON.parse(storedUserData);
-  //       dispatch(myFavoritesActions.setFavorites(favoritePosts || []));
-  //       dispatch(cartActions.setCartItems(cartItems || []));
-  //       dispatch(cartActions.setTotalCost(totalCost || 0));
-  //     }
-  //     navigate('/');
-  //   }
-  // };
+            const storedUserData = localStorage.getItem('userData');
+            if (storedUserData) {
+              dispatch(userAction.setCurrentUser(userData));
+              dispatch(myFavoritesActions.setFavorites(userInfo.favoritePosts));
+              dispatch(cartActions.setCartItems(userInfo.cartItems));
+              dispatch(cartActions.setTotalCost(userInfo.totalCost));
+            }
+          } else {
+            setMessage('Failed to fetch user data');
+          }
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+          setMessage('An error occurred while fetching user data');
+        }
+      }
+    };
 
-  // useEffect(() => {
-  //   autoSignIn();
-  // }, []);
+    fetchUserData();
+  }, [dispatch]);
 
   return (
     <StyledSignIn>
