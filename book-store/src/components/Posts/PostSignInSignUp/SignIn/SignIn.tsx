@@ -45,65 +45,98 @@ const SignIn: React.FC<ISignInProps> = ({ closeModal }) => {
     }));
   };
 
-  const handleSignIn = () => {
+  const handleSignIn = async () => {
     setMessage('');
 
-    const users: User[] = JSON.parse(localStorage.getItem('users') || '[]');
+    try {
+      const response = await fetch(
+        'https://studapi.teachmeskills.by/auth/jwt/create/',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: loginData.email,
+            password: loginData.password,
+          }),
+        }
+      );
 
-    console.log('Users in system:', users);
-    console.log('Login Data:', loginData);
+      const data = await response.json();
 
-    const user: User | undefined = users.find(
-      (user) =>
-        user.email === loginData.email && user.password === loginData.password
-    );
+      if (response.ok) {
+        // Сохраняем токен в localStorage
+        localStorage.setItem('authToken', data.access); // Предполагается, что токен находится в свойстве 'access'
 
-    //const storedFavorites = localStorage.getItem('favoritePosts');
+        // Теперь вы можете обновить состояние Redux или выполнить другие действия
+        dispatch(userAction.setCurrentUser(data.user)); // Предполагается, что данные пользователя находятся в свойстве 'user'
 
-    if (user) {
-      dispatch(userAction.setCurrentUser(user));
-      localStorage.setItem('currentUser', JSON.stringify(user));
-
-      const userKey = `userData_${user.email}`;
-      const storedUserData = localStorage.getItem(userKey);
-      if (storedUserData) {
-        const { favoritePosts, cartItems, totalCost } =
-          JSON.parse(storedUserData);
-        dispatch(myFavoritesActions.setFavorites(favoritePosts || []));
-        dispatch(cartActions.setCartItems(cartItems || []));
-        dispatch(cartActions.setTotalCost(totalCost || 0));
+        closeModal();
+        navigate('/');
+      } else {
+        // Обработка ошибок аутентификации
+        setMessage('Invalid credentials');
       }
-
-      closeModal();
-      navigate('/');
-    } else {
-      setMessage('Invalid credentials');
+    } catch (error) {
+      console.error('Ошибка входа', error);
+      setMessage('An error occurred during login');
     }
   };
-  const autoSignIn = () => {
-    const storedUser = localStorage.getItem('currentUser');
+  //   const users: User[] = JSON.parse(localStorage.getItem('users') || '[]');
 
-    if (storedUser) {
-      const userData: User = JSON.parse(storedUser);
-      dispatch(userAction.setCurrentUser(userData));
+  //   console.log('Users in system:', users);
+  //   console.log('Login Data:', loginData);
 
-      const userKey = `userData_${userData.email}`;
-      const storedUserData = localStorage.getItem(userKey);
+  //   const user: User | undefined = users.find(
+  //     (user) =>
+  //       user.email === loginData.email && user.password === loginData.password
+  //   );
 
-      if (storedUserData) {
-        const { favoritePosts, cartItems, totalCost } =
-          JSON.parse(storedUserData);
-        dispatch(myFavoritesActions.setFavorites(favoritePosts || []));
-        dispatch(cartActions.setCartItems(cartItems || []));
-        dispatch(cartActions.setTotalCost(totalCost || 0));
-      }
-      navigate('/');
-    }
-  };
+  //   if (user) {
+  //     dispatch(userAction.setCurrentUser(user));
+  //     localStorage.setItem('currentUser', JSON.stringify(user));
 
-  useEffect(() => {
-    autoSignIn();
-  }, []);
+  //     const userKey = `userData_${user.email}`;
+  //     const storedUserData = localStorage.getItem(userKey);
+  //     if (storedUserData) {
+  //       const { favoritePosts, cartItems, totalCost } =
+  //         JSON.parse(storedUserData);
+  //       dispatch(myFavoritesActions.setFavorites(favoritePosts || []));
+  //       dispatch(cartActions.setCartItems(cartItems || []));
+  //       dispatch(cartActions.setTotalCost(totalCost || 0));
+  //     }
+
+  //     closeModal();
+  //     navigate('/');
+  //   } else {
+  //     setMessage('Invalid credentials');
+  //   }
+  // };
+  // const autoSignIn = () => {
+  //   const storedUser = localStorage.getItem('currentUser');
+
+  //   if (storedUser) {
+  //     const userData: User = JSON.parse(storedUser);
+  //     dispatch(userAction.setCurrentUser(userData));
+
+  //     const userKey = `userData_${userData.email}`;
+  //     const storedUserData = localStorage.getItem(userKey);
+
+  //     if (storedUserData) {
+  //       const { favoritePosts, cartItems, totalCost } =
+  //         JSON.parse(storedUserData);
+  //       dispatch(myFavoritesActions.setFavorites(favoritePosts || []));
+  //       dispatch(cartActions.setCartItems(cartItems || []));
+  //       dispatch(cartActions.setTotalCost(totalCost || 0));
+  //     }
+  //     navigate('/');
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   autoSignIn();
+  // }, []);
 
   return (
     <StyledSignIn>

@@ -101,7 +101,7 @@ const SignUpSuccessModal: React.FC<ISuccessModal> = ({ onClose }) => {
   const handleOkClick = () => {
     if (isActivated) {
       onClose?.(); // Вызываем onClose, если он есть
-      navigate('/sign-in-up'); // Перенаправляем на страницу входа
+      navigate('/'); // Перенаправляем на страницу входа
     }
   };
 

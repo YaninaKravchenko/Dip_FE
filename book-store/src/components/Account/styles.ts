@@ -37,6 +37,8 @@ export const StyledAccountProfile = styled('div')`
 export const StyledAccountProfileName = styled('div')`
     display: flex;
     flex-direction: row;
+    position: relative;
+    
 
 `;
 

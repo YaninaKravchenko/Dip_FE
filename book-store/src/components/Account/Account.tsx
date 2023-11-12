@@ -129,24 +129,26 @@ const Account = () => {
           <StyledAccountProfileName>
             <CustomInput
               inputLabel='Password'
-              inputType='password'
+              inputType={'password'}
               placeholder='Enter your password'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+
             <StyledDiv></StyledDiv>
           </StyledAccountProfileName>
           <StyledAccountProfileName>
             <CustomInput
               inputLabel='New password'
-              inputType='password'
+              inputType={'password'}
               placeholder='Enter your new password'
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
             />
+
             <CustomInput
               inputLabel='Confirm new password'
-              inputType='password'
+              inputType={'password'}
               placeholder='Confirm new password'
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
