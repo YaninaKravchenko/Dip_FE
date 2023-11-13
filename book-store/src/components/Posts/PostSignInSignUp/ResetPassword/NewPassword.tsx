@@ -51,26 +51,35 @@ const NewPassword = () => {
     //   setMessage('Token is undefined or invalid.');
     //   return;
     // }
-    const accessToken = localStorage.getItem('authToken');
+
+    let accessToken = localStorage.getItem('authToken');
     console.log(accessToken);
 
     if (!accessToken) {
-      setMessage('Token is undefined or invalid.');
+      setMessage('Токен не определен или недействителен.');
       return;
     }
 
     const isTokenValid = await verifyToken(accessToken);
     console.log(isTokenValid);
-    let validToken = accessToken;
+
+    //let validToken = accessToken;
 
     if (!isTokenValid) {
-      const refreshTokenResponse = await refreshToken(accessToken);
-      if (refreshTokenResponse && refreshTokenResponse.access) {
-        validToken = refreshTokenResponse.access;
-        console.log(validToken);
+      const refreshTokenValue = localStorage.getItem('refreshToken');
+
+      if (refreshTokenValue) {
+        const newToken = await refreshToken(refreshTokenValue);
+
+        if (newToken) {
+          accessToken = newToken;
+          localStorage.setItem('authToken', newToken); // Сохраняем новый токен
+        } else {
+          setMessage('Не удалось обновить токен.');
+          return;
+        }
       } else {
-        setMessage('Unable to refresh token.');
-        console.log('Failed to refresh token');
+        setMessage('Отсутствует токен для обновления.');
         return;
       }
     }
@@ -82,11 +91,11 @@ const NewPassword = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${validToken}`,
+            Authorization: `Bearer ${accessToken}`,
           },
           body: JSON.stringify({
             uid: userId,
-            token: validToken,
+            token: accessToken,
             new_password: password,
           }),
         }
@@ -100,11 +109,11 @@ const NewPassword = () => {
       } else {
         const errorData = await response.text();
         console.error('Server error:', errorData);
-        setMessage('Failed to reset password.');
+        setMessage('Не удалось сбросить пароль.');
       }
     } catch (error) {
       console.error(error);
-      setMessage('An error occurred while trying to reset the password.');
+      setMessage('Произошла ошибка при попытке сброса пароля.');
     }
   };
 

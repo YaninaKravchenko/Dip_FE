@@ -37,8 +37,20 @@ export const fetchUserInfo = async (authToken: string) => {
 
 
 export const verifyToken = async (token: string) => {
-  const tokenData = JSON.stringify({ token: token });
-console.log('Sending token for verification:', tokenData);
+  //const tokenData = JSON.stringify({ token: token });
+
+  const tokenVer = localStorage.getItem('authToken');
+  const tokenData = JSON.stringify({ token: tokenVer });
+  console.log(tokenVer)
+console.log(tokenData);
+const decodedToken = JSON.parse(atob(token.split('.')[1]));
+  const currentTimestamp = Math.floor(Date.now() / 1000);
+
+  if (decodedToken.exp < currentTimestamp) {
+    console.log('Token has expired');
+    return false;
+  }
+
   try {
     console.log('Verifying token:', token);
     const response = await fetch('https://studapi.teachmeskills.by/auth/jwt/verify/', {
@@ -65,28 +77,66 @@ console.log('Sending token for verification:', tokenData);
   }
 };
 
-export const refreshToken = async (refreshToken: string) => {
-  console.log('Refreshing token:', refreshToken);
+// export const refreshToken = async (refreshToken: string) => {
+  
+//   console.log('Refreshing token:', refreshToken);
+//   try {
+//   const response = await fetch('https://studapi.teachmeskills.by/auth/jwt/refresh/', {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify({ refresh: refreshToken }),
+//   });
+
+//   console.log('Response status:', response.status); 
+//   if (!response.ok) {
+//     const errorData = await response.json();
+//     console.error('Error refreshing token:', errorData);
+//     return null;
+//   }
+
+//   const data = await response.json();
+//     return data; // Возвращает новый токен
+//   } catch (error) {
+//     console.error('Error refreshing token:', error);
+//     return null;
+//   }
+// };
+
+
+export const refreshToken = async (refreshTokenValue: string) => {
   try {
-  const response = await fetch('https://studapi.teachmeskills.by/auth/jwt/refresh/', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ refresh: refreshToken }),
-  });
+    const response = await fetch('https://studapi.teachmeskills.by/auth/jwt/refresh/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refresh: refreshTokenValue }),
+    });
 
-  console.log('Response status:', response.status); 
-  if (!response.ok) {
-    const errorData = await response.json();
-    console.error('Error refreshing token:', errorData);
-    return null;
-  }
+//     if (!response.ok) {
+//       const errorData = await response.json();
+//       console.error('Error refreshing token:', errorData);
+//       return null;
+//     }
 
+//     const data = await response.json();
+//     localStorage.setItem('authToken', data.access); // Обновляем токен доступа
+//     return data.access;
+//   } catch (error) {
+//     console.error('Error refreshing token:', error);
+//     return null;
+//   }
+// };
+if (response.ok) {
   const data = await response.json();
-    return data; // Возвращает новый токен
-  } catch (error) {
-    console.error('Error refreshing token:', error);
-    return null;
-  }
-};
+  localStorage.setItem('authToken', data.access); // Сохраняем обновленный токен
+  return data.access;
+} else {
+  console.log('Не удалось обновить токен');
+  return null;
+}
+} catch (error) {
+console.error('Ошибка обновления токена:', error);
+return null;
+}
+}

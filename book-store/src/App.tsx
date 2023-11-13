@@ -16,26 +16,27 @@ function App() {
   useEffect(() => {
     const verifyAndRefreshToken = async () => {
       const accessToken = localStorage.getItem('authToken');
+      const refreshTokenStr = localStorage.getItem('refreshToken');
       console.log(accessToken);
-      if (!accessToken) {
+      console.log(refreshTokenStr);
+
+      if (!accessToken || !refreshTokenStr) {
         // если токен отсутствует
         console.log('No access token found');
+
         return;
       }
 
       const isTokenValid = await verifyToken(accessToken);
 
       if (!isTokenValid) {
-        console.log('Token');
-        const refreshTokenResponse = await refreshToken(accessToken);
+        const newAccessToken = await refreshToken(refreshTokenStr);
 
-        if (refreshTokenResponse && refreshTokenResponse.access) {
-          localStorage.setItem('authToken', refreshTokenResponse.access);
-          return refreshTokenResponse.access;
+        if (newAccessToken && newAccessToken.access) {
+          localStorage.setItem('authToken', newAccessToken.access);
         } else {
           // если токен не удалось обновить
           console.log('Failed to refresh token');
-          return null;
         }
       }
     };

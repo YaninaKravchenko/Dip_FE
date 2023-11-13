@@ -18,6 +18,7 @@ import Button from '../../../Button/Button';
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import { fetchUserInfo } from '../../../../client/api/postsApi';
+import { refreshToken } from '../../../../client/api/postsApi';
 
 interface ISignInProps {
   closeModal: () => void;
@@ -72,6 +73,8 @@ const SignIn: React.FC<ISignInProps> = ({ closeModal }) => {
         // Сохраняем токен в localStorage
 
         localStorage.setItem('authToken', data.access);
+        localStorage.setItem('refreshToken', data.refresh);
+
         console.log('Токен сохранен:', data.access);
         console.log('Token saved:', localStorage.getItem('authToken'));
 
@@ -132,7 +135,8 @@ const SignIn: React.FC<ISignInProps> = ({ closeModal }) => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const authToken = localStorage.getItem('authToken') || '';
+      let authToken = localStorage.getItem('authToken') || '';
+      const refreshTokenValue = localStorage.getItem('refreshToken');
 
       const userInfoString = localStorage.getItem('userInfo');
       const userInfo = userInfoString ? JSON.parse(userInfoString) : null;
@@ -142,16 +146,12 @@ const SignIn: React.FC<ISignInProps> = ({ closeModal }) => {
         const parsedUser = JSON.parse(storedUser);
         dispatch(userAction.setCurrentUser(parsedUser));
       }
+      if (!authToken && refreshTokenValue) {
+        authToken = await refreshToken(refreshTokenValue);
+      }
 
       if (authToken) {
         try {
-          // const authToken = localStorage.getItem('authToken');
-
-          // if (!authToken) {
-          //   setMessage('User is not authenticated');
-          //   return;
-          // }
-
           const response = await fetch(
             'https://studapi.teachmeskills.by/auth/users/me/',
             {
