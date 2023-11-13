@@ -46,11 +46,6 @@ const SearchField: FC<ISearchFieldProps> = ({ isOpen, onClick }) => {
           .then((data) => {
             console.log(data);
             if (data && Array.isArray(data.books)) {
-              // const titlesContainingSearchText = data.books
-              //   .filter((book: PostBook) =>
-              //     book.title.toLowerCase().includes(newText.toLowerCase())
-              //   ) // фильтрация книг на клиенте
-              //   .map((book: PostBook) => book.title);
               const { total, page, books } = data;
               const filteredBooks = data.books.filter((book: PostBook) =>
                 book.title.toLowerCase().includes(newText.toLowerCase())
@@ -63,11 +58,7 @@ const SearchField: FC<ISearchFieldProps> = ({ isOpen, onClick }) => {
                   books: filteredBooks,
                 })
               );
-
-              //dispatch(searchActions.setFilteredPosts(filteredBooks));
             } else {
-              // Обработка ошибок или пустых результатовa
-              //dispatch(searchActions.setFilteredPosts([]));
               console.log('Ответ API не содержит книг.');
             }
           })
@@ -81,7 +72,6 @@ const SearchField: FC<ISearchFieldProps> = ({ isOpen, onClick }) => {
                 books: [],
               })
             );
-            // Очистите поисковые результаты в случае ошибки
           });
       }
     }, 500),

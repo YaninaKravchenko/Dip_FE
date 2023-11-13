@@ -91,11 +91,11 @@ const NewPassword = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`,
+            //Authorization: `Bearer ${accessToken}`,
           },
           body: JSON.stringify({
             uid: userId,
-            token: accessToken,
+            token: token,
             new_password: password,
           }),
         }

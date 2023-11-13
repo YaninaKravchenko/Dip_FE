@@ -162,6 +162,7 @@ const SignIn: React.FC<ISignInProps> = ({ closeModal }) => {
               },
             }
           );
+          console.log('Response:', response);
 
           if (response.ok) {
             const userData = await response.json();
