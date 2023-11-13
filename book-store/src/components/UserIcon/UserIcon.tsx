@@ -61,7 +61,7 @@ const UserIcon = () => {
       // localStorage.setItem('userData', JSON.stringify(userDataToStore));
 
       localStorage.removeItem('currentUser');
-      localStorage.removeItem('authToken');
+      //localStorage.removeItem('authToken');
       localStorage.removeItem('userInfo');
 
       localStorage.removeItem('userData');

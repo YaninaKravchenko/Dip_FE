@@ -21,9 +21,6 @@ const NewPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
 
-  console.log('userId:', userId);
-  console.log('token:', token);
-
   useEffect(() => {
     if (!userId || !token) {
       setMessage('Ссылка для сброса пароля недействительна или устарела.');
@@ -50,20 +47,30 @@ const NewPassword = () => {
       return;
     }
 
-    if (!token) {
+    // if (!token) {
+    //   setMessage('Token is undefined or invalid.');
+    //   return;
+    // }
+    const accessToken = localStorage.getItem('authToken');
+    console.log(accessToken);
+
+    if (!accessToken) {
       setMessage('Token is undefined or invalid.');
       return;
     }
 
-    const isTokenValid = await verifyToken(token);
-    let validToken = token;
+    const isTokenValid = await verifyToken(accessToken);
+    console.log(isTokenValid);
+    let validToken = accessToken;
 
     if (!isTokenValid) {
-      const refreshTokenResponse = await refreshToken(token);
+      const refreshTokenResponse = await refreshToken(accessToken);
       if (refreshTokenResponse && refreshTokenResponse.access) {
         validToken = refreshTokenResponse.access;
+        console.log(validToken);
       } else {
         setMessage('Unable to refresh token.');
+        console.log('Failed to refresh token');
         return;
       }
     }

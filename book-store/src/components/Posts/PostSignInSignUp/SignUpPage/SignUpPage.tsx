@@ -86,12 +86,12 @@ const SignUpPage: React.FC<SignUpPageProps> = ({ setIsVisible, onClose }) => {
         // Обработка ошибки, если статус ответа не "ok"
         const errorData = await response.json();
         console.log(errorData);
-        alert('Registration failed: ' + (errorData.detail || 'Unknown error'));
+        //alert('Registration failed: ' + (errorData.detail || 'Unknown error'));
       }
     } catch (error) {
       // Обработка исключения в случае ошибки при выполнении запроса
       console.error('Registration error:', error);
-      alert('Registration error: ' + error);
+      //alert('Registration error: ' + error);
     }
   };
 

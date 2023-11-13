@@ -8,9 +8,40 @@ import { userAction } from './Store/Actions/userActions';
 import { RootState } from './Store';
 import { useSelector } from 'react-redux';
 import CartPage from './components/Pages/CartPage';
+import { verifyToken, refreshToken } from './client/api/postsApi';
 
 function App() {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const verifyAndRefreshToken = async () => {
+      const accessToken = localStorage.getItem('authToken');
+      console.log(accessToken);
+      if (!accessToken) {
+        // если токен отсутствует
+        console.log('No access token found');
+        return;
+      }
+
+      const isTokenValid = await verifyToken(accessToken);
+
+      if (!isTokenValid) {
+        console.log('Token');
+        const refreshTokenResponse = await refreshToken(accessToken);
+
+        if (refreshTokenResponse && refreshTokenResponse.access) {
+          localStorage.setItem('authToken', refreshTokenResponse.access);
+          return refreshTokenResponse.access;
+        } else {
+          // если токен не удалось обновить
+          console.log('Failed to refresh token');
+          return null;
+        }
+      }
+    };
+
+    verifyAndRefreshToken();
+  }, []);
 
   const currentStateName = useSelector(
     (state: RootState) => state.user.currentUser?.name

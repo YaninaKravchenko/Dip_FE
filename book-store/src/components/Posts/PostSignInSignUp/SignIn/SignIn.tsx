@@ -66,9 +66,14 @@ const SignIn: React.FC<ISignInProps> = ({ closeModal }) => {
 
       const data = await response.json();
 
+      console.log('Ответ от сервера:', data);
+
       if (response.ok) {
         // Сохраняем токен в localStorage
-        localStorage.setItem('authToken', data.access); // Предполагается, что токен находится в свойстве 'access'
+
+        localStorage.setItem('authToken', data.access);
+        console.log('Токен сохранен:', data.access);
+        console.log('Token saved:', localStorage.getItem('authToken'));
 
         const userInfo = await fetchUserInfo(data.access);
         console.log('User data:', userInfo);
