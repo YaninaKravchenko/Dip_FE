@@ -72,31 +72,47 @@ const SignIn: React.FC<ISignInProps> = ({ closeModal }) => {
 
         const userInfo = await fetchUserInfo(data.access);
         console.log('User data:', userInfo);
+        localStorage.setItem('userInfo', JSON.stringify(userInfo));
+        localStorage.setItem('currentUser', JSON.stringify(userInfo));
 
         // Восстанавливаем данные из localStorage
 
-        const storedFavoritePosts = localStorage.getItem('favoritePosts');
-        const storedCartItems = localStorage.getItem('cartItems');
-        const storedTotalCost = localStorage.getItem('totalCost');
+        // const storedFavoritePosts = localStorage.getItem('favoritePosts');
+        // const storedCartItems = localStorage.getItem('cartItems');
+        // const storedTotalCost = localStorage.getItem('totalCost');
 
-        if (storedFavoritePosts) {
-          const parsedFavoritePosts = JSON.parse(storedFavoritePosts);
-          dispatch(myFavoritesActions.setFavorites(parsedFavoritePosts));
-        }
+        // Восстанавливаем данные из localStorage
+        const storedFavoritePosts =
+          localStorage.getItem('favoritePosts') || '[]';
+        const storedCartItems = localStorage.getItem('cartItems') || '[]';
+        const storedTotalCost = localStorage.getItem('totalCost') || '0';
 
-        if (storedCartItems) {
-          const parsedCartItems = JSON.parse(storedCartItems);
-          dispatch(cartActions.setCartItems(parsedCartItems));
-        }
+        // if (storedFavoritePosts) {
+        //   const parsedFavoritePosts = JSON.parse(storedFavoritePosts);
+        //   dispatch(myFavoritesActions.setFavorites(parsedFavoritePosts));
+        // }
 
-        if (storedTotalCost) {
-          const parsedTotalCost = JSON.parse(storedTotalCost);
-          dispatch(cartActions.setTotalCost(parsedTotalCost));
-        }
+        // if (storedCartItems) {
+        //   const parsedCartItems = JSON.parse(storedCartItems);
+        //   dispatch(cartActions.setCartItems(parsedCartItems));
+        // }
 
-        localStorage.setItem('userInfo', JSON.stringify(userInfo));
-        localStorage.setItem('currentUser', JSON.stringify(userInfo));
+        // if (storedTotalCost) {
+        //   const parsedTotalCost = JSON.parse(storedTotalCost);
+        //   dispatch(cartActions.setTotalCost(parsedTotalCost));
+        // }
+
+        // localStorage.setItem('userInfo', JSON.stringify(userInfo));
+        // localStorage.setItem('currentUser', JSON.stringify(userInfo));
+        // dispatch(userAction.setCurrentUser(userInfo));
+
+        // Обновляем состояние Redux
         dispatch(userAction.setCurrentUser(userInfo));
+        dispatch(
+          myFavoritesActions.setFavorites(JSON.parse(storedFavoritePosts))
+        );
+        dispatch(cartActions.setCartItems(JSON.parse(storedCartItems)));
+        dispatch(cartActions.setTotalCost(JSON.parse(storedTotalCost)));
 
         closeModal();
         navigate('/');

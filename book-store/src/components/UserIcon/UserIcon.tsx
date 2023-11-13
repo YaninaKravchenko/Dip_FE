@@ -36,14 +36,29 @@ const UserIcon = () => {
     if (currentUser) {
       localStorage.setItem('currentUser', JSON.stringify(currentUser));
 
-      const userKey = `userData_${currentUser.email}`;
-      const userDataToStore = {
-        favoritePosts,
-        cartItems,
-        totalCost,
-      };
+      // const userKey = `userData_${currentUser.email}`;
+      // const userDataToStore = {
+      //   favoritePosts,
+      //   cartItems,
+      //   totalCost,
+      // };
 
-      localStorage.setItem('userData', JSON.stringify(userDataToStore));
+      const userDataToStore = {
+        favoritePosts: favoritePosts,
+        cartItems: cartItems,
+        totalCost: totalCost,
+      };
+      localStorage.setItem(
+        `userData_${currentUser.email}`,
+        JSON.stringify(userDataToStore)
+      );
+
+      // Удаляем данные пользователя из localStorage
+
+      // localStorage.setItem('favoritePosts', JSON.stringify(favoritePosts));
+      // localStorage.setItem('cartItems', JSON.stringify(cartItems));
+      // localStorage.setItem('totalCost', JSON.stringify(totalCost));
+      // localStorage.setItem('userData', JSON.stringify(userDataToStore));
 
       localStorage.removeItem('currentUser');
       localStorage.removeItem('authToken');
@@ -51,9 +66,9 @@ const UserIcon = () => {
 
       localStorage.removeItem('userData');
 
-      localStorage.setItem('favoritePosts', JSON.stringify(favoritePosts));
-      localStorage.setItem('cartItems', JSON.stringify(cartItems));
-      localStorage.setItem('totalCost', String(totalCost));
+      // localStorage.setItem('favoritePosts', JSON.stringify(favoritePosts));
+      // localStorage.setItem('cartItems', JSON.stringify(cartItems));
+      //localStorage.setItem('totalCost', String(totalCost));
       dispatch(userAction.setCurrentUser(null));
 
       dispatch(userAction.clearCurrentUser());
@@ -108,13 +123,32 @@ const UserIcon = () => {
     localStorage.setItem('totalCost', JSON.stringify(totalCost));
   }, [cartItems, totalCost]);
 
+  // useEffect(() => {
+  //   // Восстанавливаем информацию о пользователе из localStorage
+  //   const storedUser = localStorage.getItem('currentUser');
+  //   if (storedUser) {
+  //     // Проверяем, что storedUser не null
+  //     const parsedUser = JSON.parse(storedUser);
+  //     dispatch(userAction.setCurrentUser(parsedUser));
+  //   }
+  // }, [dispatch]);
+
   useEffect(() => {
-    // Восстанавливаем информацию о пользователе из localStorage
     const storedUser = localStorage.getItem('currentUser');
     if (storedUser) {
-      // Проверяем, что storedUser не null
       const parsedUser = JSON.parse(storedUser);
       dispatch(userAction.setCurrentUser(parsedUser));
+
+      // Восстанавливаем данные из localStorage
+      const storedFavoritePosts = localStorage.getItem('favoritePosts') || '[]';
+      const storedCartItems = localStorage.getItem('cartItems') || '[]';
+      const storedTotalCost = localStorage.getItem('totalCost') || '0';
+
+      dispatch(
+        myFavoritesActions.setFavorites(JSON.parse(storedFavoritePosts))
+      );
+      dispatch(cartActions.setCartItems(JSON.parse(storedCartItems)));
+      dispatch(cartActions.setTotalCost(JSON.parse(storedTotalCost)));
     }
   }, [dispatch]);
 

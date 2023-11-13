@@ -1,4 +1,5 @@
 import { ApiResponse, BookResponse } from '../../types';
+import { user } from '../utils/http';
 
 export const fetchPostData = async () => {
     const response = await fetch(`https://api.itbook.store/1.0/new`);
@@ -34,39 +35,49 @@ export const fetchUserInfo = async (authToken: string) => {
   return response.json();
 };
 
+
 export const verifyToken = async (token: string) => {
   try {
+    console.log('Verifying token:', token);
     const response = await fetch('https://studapi.teachmeskills.by/auth/jwt/verify/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ token }),
+      body: JSON.stringify({  
+        token: token 
+      }),
     });
 
-//     const data = await response.json();
-//     return data ===  204; // Возвращает данные о валидности токена
-//   } catch (error) {
-//     console.error('Error verifying token:', error);
-// return false
-//   }
-// };
-
-
+    console.log('Response status:', response.status);
     if (!response.ok) {
       const errorData = await response.json();
       console.error('Error verifying token:', errorData);
-      return null;
+      return false; 
     }
 
-    const data = await response.json();
-    return data; // Возвращает данные о валидности токена
+    // Если токен действителен, функция возвращает true
+    return true;
   } catch (error) {
     console.error('Error verifying token:', error);
+    return false; // Возвращает false, если возникла ошибка
   }
 };
+//     if (!response.ok) {
+//       const errorData = await response.json();
+//       console.error('Error verifying token:', errorData);
+//       return null;
+//     }
+
+//     const data = await response.json();
+//     return data; // Возвращает данные о валидности токена
+//   } catch (error) {
+//     console.error('Error verifying token:', error);
+//   }
+// };
 
 export const refreshToken = async (refreshToken: string) => {
+  console.log('Refreshing token:', refreshToken);
   try {
   const response = await fetch('https://studapi.teachmeskills.by/auth/jwt/refresh/', {
     method: 'POST',
@@ -76,7 +87,7 @@ export const refreshToken = async (refreshToken: string) => {
     body: JSON.stringify({ refresh: refreshToken }),
   });
 
-  
+  console.log('Response status:', response.status); 
   if (!response.ok) {
     const errorData = await response.json();
     console.error('Error refreshing token:', errorData);
@@ -87,5 +98,30 @@ export const refreshToken = async (refreshToken: string) => {
     return data; // Возвращает новый токен
   } catch (error) {
     console.error('Error refreshing token:', error);
+    return null;
   }
 };
+
+// export const verifyToken = async (token: string) => {
+//   console.log('Verifying token:', token);
+//   try {
+//     const response = await user.post('/auth/jwt/verify/', { token });
+//     console.log('Verification response:', response);
+//     return response;
+//   } catch (error) {
+//     console.error('Error verifying token:', error);
+//     throw error; 
+//   }
+// };
+
+// export const refreshToken = async (token: string) => {
+//   console.log('Refreshing token:', token);
+//   try {
+//     const response = await user.post('/auth/jwt/refresh/', { refresh: token });
+//     console.log('Refresh token response:', response);
+//     return response;
+//   } catch (error) {
+//     console.error('Error refreshing token:', error);
+//     throw error;
+//   }
+// };
